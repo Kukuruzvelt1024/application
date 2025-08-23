@@ -14,7 +14,7 @@ import java.io.*;
 
 @Controller
 public class FileController {
-    private static File sourceVideoFile = new File("B:\\src\\source.mp4");
+    private static File sourceVideoFile = new File("B:\\src\\Video File Example.mp4");
 
     @Autowired
     private MyResourceHttpRequestHandler handler;

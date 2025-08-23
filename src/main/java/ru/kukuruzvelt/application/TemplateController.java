@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/videolist")
 public class TemplateController {
 
-    private String videoLocation = "B:\\src";
+    private String videoLocation = "B:\\Фильмы\\";
 
     private ConcurrentHashMap<String, File> videos = new ConcurrentHashMap<String, File>();
 
