@@ -50,9 +50,14 @@ public class HelloController {
     }
 
     @GetMapping("/video")
-    public String videoController(){
+    public String videoController(Model model){
+
+
         return "video";
     }
+
+
+
 
 
 

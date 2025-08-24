@@ -25,7 +25,19 @@ public class FileController {
                         throws ServletException, IOException {
        request.setAttribute(MyResourceHttpRequestHandler.ATTR_FILE, sourceVideoFile);
        handler.handleRequest(request, response);
+       System.out.println("//File");
    }
+
+    @GetMapping("/file/{name}")
+    public void getSomeFile(HttpServletRequest request,
+                        HttpServletResponse response, @PathVariable String name)
+            throws ServletException, IOException {
+        request.setAttribute(MyResourceHttpRequestHandler.ATTR_FILE, sourceVideoFile);
+        handler.handleRequest(request, response);
+        System.out.println(name + " file has been requested");
+    }
+
+
     @Component
     final static class MyResourceHttpRequestHandler extends ResourceHttpRequestHandler {
 
