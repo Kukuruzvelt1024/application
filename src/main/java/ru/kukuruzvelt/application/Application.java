@@ -1,18 +1,15 @@
 package ru.kukuruzvelt.application;
 
-import org.apache.catalina.LifecycleException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-
-
 
 
 @SpringBootApplication
 public class Application {
 
-	public static void main(String[] args) throws Throwable{
+	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+
 	}
 
 

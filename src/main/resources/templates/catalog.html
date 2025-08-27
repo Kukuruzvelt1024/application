@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Каталог</title>
+    <style>
+        body {
+            color: green; /* Цвет текста */
+            face: Impact;
+        }
+    </style>
 </head>
 <body style="background-color: black;">
     <h1><font size="6" color="#f5f5f5" face="Impact">Catalog</font></h1>
@@ -15,10 +21,16 @@
         </tr>
         </thead>
         <tbody>
+
         <tr th:each="user : ${users}">
             <td th:text="${user.firstName}">Имя</td>
             <td th:text="${user.lastName}">Фамилия</td>
         </tr>
+        <tr th:each="video : ${videos}">
+            <td th:text="${name}">Имя</td>
+            <p><a href="dog.html"><font color="white">Образец ссылки</font></a></p>
+        </tr>
+
         </tbody>
     </table>
 </body>

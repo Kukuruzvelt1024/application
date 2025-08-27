@@ -13,8 +13,10 @@ import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import java.io.*;
 
 @Controller
+
 public class FileController {
     private static File sourceVideoFile = new File("B:\\src\\Video File Example.mp4");
+    private static String sourceFolder = "B:\\src";
 
     @Autowired
     private MyResourceHttpRequestHandler handler;
@@ -25,14 +27,14 @@ public class FileController {
                         throws ServletException, IOException {
        request.setAttribute(MyResourceHttpRequestHandler.ATTR_FILE, sourceVideoFile);
        handler.handleRequest(request, response);
-       System.out.println("/File");
+       System.out.println(sourceVideoFile);
    }
 
     @GetMapping("/file/{name}")
     public void getSomeFile(HttpServletRequest request,
                         HttpServletResponse response, @PathVariable String name)
             throws ServletException, IOException {
-        File source = new File("B:\\src\\{name}");
+        File source = new File(sourceFolder, name);
         request.setAttribute(MyResourceHttpRequestHandler.ATTR_FILE, source);
         handler.handleRequest(request, response);
         System.out.println(name + " file requested");
@@ -45,8 +47,14 @@ public class FileController {
         private final static String ATTR_FILE = MyResourceHttpRequestHandler.class.getName() + ".file";
         @Override
         protected Resource getResource(HttpServletRequest request) throws IOException {
+            System.out.println(request.getRequestURL());
+            System.out.println();
             final File file = (File) request.getAttribute(ATTR_FILE);
-            return new FileSystemResource(sourceVideoFile);
+            return new FileSystemResource(new File(sourceFolder,
+                    request.getRequestURL().
+                            toString().
+                            substring(30))+".mp4");
+            //Данный код привязан к полному URI.
         }
 
     }

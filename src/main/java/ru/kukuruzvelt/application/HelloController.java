@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -55,6 +56,17 @@ public class HelloController {
 
         return "video";
     }
+
+    @GetMapping("/video/{name}")
+    public String videoController(Model model, @PathVariable String name){
+        String path = name;
+        model.addAttribute("pageTitle", name);
+        path = "file/" + path;
+        model.addAttribute("page", path);
+        System.out.println("page:" + path);
+        return "video";
+    }
+
 
 
 
