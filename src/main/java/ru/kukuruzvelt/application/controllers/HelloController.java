@@ -1,21 +1,14 @@
-package ru.kukuruzvelt.application;
+package ru.kukuruzvelt.application.controllers;
 
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 import java.util.Date;
 
@@ -50,22 +43,20 @@ public class HelloController {
         return new ResponseEntity(stream, HttpStatus.OK);
     }
 
-    @GetMapping("/video")
-    public String videoController(Model model){
-
-
-        return "video";
+    @GetMapping("/welcome")
+    public String welcomePageMapping(Model model, HttpServletRequest request){
+        System.out.println("Access to -welcome.html page from: " + request.getRemoteAddr() + "\n + " +
+                request.getHeader("User-agent"));
+        model.addAttribute("ip", request.getRemoteAddr().toString());
+        model.addAttribute("useragent", request.getHeader("user-agent"));
+        model.addAttribute("acceptlanguage", request.getHeader("accept-language"));
+        model.addAttribute("controller", this.getClass());
+        model.addAttribute("method", this.getClass().getMethods()[0]);
+        System.out.println("Get Mapping Executed in class" + this.getClass().toString());
+        return "welcome";
     }
 
-    @GetMapping("/video/{name}")
-    public String videoController(Model model, @PathVariable String name){
-        String path = name;
-        model.addAttribute("pageTitle", name);
-        path = "file/" + path;
-        model.addAttribute("page", path);
-        System.out.println("page:" + path);
-        return "video";
-    }
+
 
 
 

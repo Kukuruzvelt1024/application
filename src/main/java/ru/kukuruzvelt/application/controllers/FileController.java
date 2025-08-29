@@ -1,4 +1,4 @@
-package ru.kukuruzvelt.application;
+package ru.kukuruzvelt.application.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
