@@ -12,40 +12,18 @@ import ru.kukuruzvelt.application.Application;
 import ru.kukuruzvelt.application.domain.DAO;
 import ru.kukuruzvelt.application.domain.MovieEntity;
 
-import java.io.File;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Controller
 public class CatalogController {
 
-    private String resourceFilesLocation = "B:\\src";
-    private String resourceTextFilesLocation = "B:\\names";
 
     @GetMapping("/catalog")
-    public String getCatalog(HttpServletRequest request,
-                             HttpServletResponse response,
-                             Model model){
-        File f = new File("B:\\src");
-        File[] files = f.listFiles();
-        List<String> videoList = new ArrayList<>();
-        for (int i = 0; i < files.length; i++){
-            videoList.add(files[i].getName().split(".mp")[0]);
-        }
-
-
-        model.addAttribute("videos", videoList);
-        System.out.println();
+    public String getCatalog(Model model){
+        List<MovieEntity> list = new DAO(Application.sourceBase).getListOfEntities();
+        model.addAttribute("MoviesList", list);
         return "catalog";
-    }
-
-    @GetMapping("/catalogdb")
-    public String getCatalogdb(Model model){
-        DAO dao = new DAO(Application.sourceBase);
-        List<MovieEntity> list = dao.getListOfEntities();
-
-        model.addAttribute("videos", list);
-        return "catalogdb";
     }
 
 

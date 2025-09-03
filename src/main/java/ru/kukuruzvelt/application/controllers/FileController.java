@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
+import ru.kukuruzvelt.application.Application;
+import ru.kukuruzvelt.application.domain.DAO;
+
 import java.io.*;
 
 @Controller
@@ -21,14 +24,6 @@ public class FileController {
     @Autowired
     private MyResourceHttpRequestHandler handler;
 
-   @GetMapping("/file")
-    public void getFile(HttpServletRequest request,
-                        HttpServletResponse response)
-                        throws ServletException, IOException {
-       request.setAttribute(MyResourceHttpRequestHandler.ATTR_FILE, sourceVideoFile);
-       handler.handleRequest(request, response);
-       System.out.println(sourceVideoFile);
-   }
 
     @GetMapping("/file/{name}")
     public void getSomeFile(HttpServletRequest request,
@@ -49,6 +44,8 @@ public class FileController {
         protected Resource getResource(HttpServletRequest request) throws IOException {
             System.out.println(request.getRequestURL());
             System.out.println();
+            DAO dao = new DAO(Application.sourceBase);
+
             final File file = (File) request.getAttribute(ATTR_FILE);
             return new FileSystemResource(new File(sourceFolder,
                     request.getRequestURL().

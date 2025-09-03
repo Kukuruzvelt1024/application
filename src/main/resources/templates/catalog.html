@@ -15,15 +15,15 @@
     </style>
 </head>
 <body style="background-color: black;">
-    <h1><font size="6" color="#f5f5f5" face="Impact">Catalog</font></h1>
-    <table>
-        <tbody>
+<h1><font size="6" color="#f5f5f5" face="Impact">Catalog</font></h1>
+<table>
+    <tbody>
 
-        <tr th:each="video : ${videos}">
-            <p><a th:href="'/video/' + ${video}"><p th:text="${video}"/></a></p>
-        </tr>
+    <tr th:each="video : ${MoviesList}">
+        <p><a th:href="'/movie/' + ${video.WebMapping}"><p th:text="${video.TitleRussian}"/></a></p>
+    </tr>
 
-        </tbody>
-    </table>
+    </tbody>
+</table>
 </body>
 </html>
