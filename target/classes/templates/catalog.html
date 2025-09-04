@@ -4,26 +4,47 @@
     <meta charset="UTF-8">
     <title>Каталог</title>
     <style>
-        body {color: green;} /* Цвет текста */
+        body {color: white;} /* Цвет текста */
         a:link { color: white } /* Цвет непросмотренной ссылки */
         a:visited { color: white; } /* Цвет посещенной ссылки */
         a:hover { color: red; } /* Цвет при наведении */
         a:active { color: green; } /* Цвет активной ссылки */
-        h1 {font size: 26;}
+        h1{
+            font-size: 72;
+            color = white;
+            font-family: "Times New Roman"
+        }
+        .hollow-rectangle {
+  width: 200px; /* Ширина прямоугольника */
+  height: 400px; /* Высота прямоугольника */
+  border: 2px solid white; /* Белый контур толщиной 2px */
+  background-color: transparent; /* Или background-color: rgba(0,0,0,0); */
+  box-sizing: border-box; /* Важно для корректного отображения границы */
+}
 
 
     </style>
 </head>
 <body style="background-color: black;">
-<h1><font size="6" color="#f5f5f5" face="Impact">Catalog</font></h1>
-<table>
-    <tbody>
+<h1>Каталог</h1>
+<a href="/catalog?sortby=year">Сортировка по году</a>
+<a href="/catalog?sortby=ru">Сортировка по алфавиту</a>
+<a href="/catalog?sortby=duration">Сортировка по продолжительности</a>
+<div class="hollow-rectangle" th:each="video : ${MoviesList}">
+    <img th:src="'/poster/' + ${video.WebMapping}" th:alt="${video.TitleRussian}" width="120" height="160"/>
+    <a th:href="'/movie/' + ${video.WebMapping}"><p th:text="${video.TitleRussian}"/></a>
+    <!--<details> -->
+        <p th:text="'Год: ' + ${video.Year}"/>
+        <p th:text="'Страна: ' + ${video.Country}"/>
+        <p th:text="'Жанр: ' + ${video.Genre}"/>
+        <p th:text="'Продолжительность: ' + ${video.Duration}"/>
+    <!--</>details> -->
+</div>
 
-    <tr th:each="video : ${MoviesList}">
-        <p><a th:href="'/movie/' + ${video.WebMapping}"><p th:text="${video.TitleRussian}"/></a></p>
-    </tr>
 
-    </tbody>
-</table>
+
+
+
+
 </body>
 </html>

@@ -14,12 +14,16 @@ public class VideoController {
 
     @GetMapping("/movie/{name}")
     public String videoController1(Model model, @PathVariable String name){
-        DAO dao = new DAO(Application.sourceBase);
-        MovieEntity me = dao.findByWebMapping(name);
-        System.out.println("Movie Mapping \n" + me.toString());
-        model.addAttribute("pageTitle", me.getTitleRussian());
-        model.addAttribute("page", "file/" + name);
-        return "video";
+        try {
+            MovieEntity me = new DAO(Application.sourceBase).findByWebMapping(name);
+            System.out.println("Movie Mapping \n" + me.toString());
+            model.addAttribute("pageTitle", me.getTitleRussian());
+            model.addAttribute("page", "file/" + name);
+            return "video";
+        }
+        catch (NullPointerException npe){
+            return "404";
+        }
     }
 
 
