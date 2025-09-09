@@ -4,47 +4,63 @@
     <meta charset="UTF-8">
     <title>Каталог</title>
     <style>
-        body {color: white;} /* Цвет текста */
+        body {
+            background-color: #424141;
+            color: white; * Цвет текста */
+
+        }
+
         a:link { color: white } /* Цвет непросмотренной ссылки */
         a:visited { color: white; } /* Цвет посещенной ссылки */
         a:hover { color: red; } /* Цвет при наведении */
         a:active { color: green; } /* Цвет активной ссылки */
         h1{
-            font-size: 72;
+            font-size: 72px;
             color = white;
-            font-family: "Times New Roman"
+            font-family: "Impact";
+            text-align: center;
         }
+        h2{
+            text-align: center;
+        }
+        .sort{text-align: center;}
         .hollow-rectangle {
-  width: 200px; /* Ширина прямоугольника */
-  height: 400px; /* Высота прямоугольника */
-  border: 2px solid white; /* Белый контур толщиной 2px */
-  background-color: transparent; /* Или background-color: rgba(0,0,0,0); */
-  box-sizing: border-box; /* Важно для корректного отображения границы */
-}
-
+            width: 240px; /* Ширина прямоугольника */
+            height: 400px; /* Высота прямоугольника */
+            border: 2px solid white; /* Белый контур толщиной 2px */
+            background-color: transparent; /* Или background-color: rgba(0,0,0,0); */
+            box-sizing: border-box; /* Важно для корректного отображения границы */
+        }
+        .plenka{
+            background-image: url(/assets/r);
+            background-size: 100px 50px;
+            background-repeat: no-repeat;
+            background-repeat: repeat-y;
+        }
 
     </style>
 </head>
-<body style="background-color: black;">
-<h1>Каталог</h1>
-<a href="/catalog?sortby=year">Сортировка по году</a>
-<a href="/catalog?sortby=ru">Сортировка по алфавиту</a>
-<a href="/catalog?sortby=duration">Сортировка по продолжительности</a>
-<div class="hollow-rectangle" th:each="video : ${MoviesList}">
-    <img th:src="'/poster/' + ${video.WebMapping}" th:alt="${video.TitleRussian}" width="120" height="160"/>
-    <a th:href="'/movie/' + ${video.WebMapping}"><p th:text="${video.TitleRussian}"/></a>
-    <!--<details> -->
-        <p th:text="'Год: ' + ${video.Year}"/>
-        <p th:text="'Страна: ' + ${video.Country}"/>
-        <p th:text="'Жанр: ' + ${video.Genre}"/>
-        <p th:text="'Продолжительность: ' + ${video.Duration}"/>
-    <!--</>details> -->
-</div>
+<body>
+    <div class="plenka"/>
+    <h1>Каталог</h1>
+    <h2>Сортировка</h2>
+    <div class="sort"><a href="/catalog?sortby=year">по году</a></div>
+    <div class="sort"><a href="/catalog?sortby=ru" class="sort">по названию</a></div>
+    <div class="sort"><a href="/catalog?sortby=duration" class="sort">о продолжительности</a></div>
+    <div class="sort"><a href="/catalog?sortby=genre" class="sort">по жанру</a></div>
+    <div class="container">
+        <div class="hollow-rectangle" th:each="video, status : ${MoviesList}" th:style="'position: absolute;
+            left: '+${550 + 250*((status.index)%4)} + 'px; top: ' + ${380 + 450*((status.index)/4)} +'px'">
 
+            <img th:src="'/poster/' + ${video.WebMapping}" th:alt="${video.TitleRussian}" width="120" height="180" style="position:relative; left: 50px;"/>
+            <a th:href="'/movie/' + ${video.WebMapping}"><p th:text="${video.TitleRussian}"/></a>
+            <p th:text="'Год: ' + ${video.Year}"/>
+            <p th:text="'Страна: ' + ${video.Country}"/>
+            <p th:text="'Жанр: ' + ${video.Genre}"/>
+            <p th:text="'Продолжительность: ' + ${video.Duration} + ' мин.'"/>
 
-
-
-
-
-</body>
-</html>
+        </div>
+    </div>
+    <p>©2025 Kukuruzvelt. Все права в уязвимости.</p>
+    </body>
+ </html>

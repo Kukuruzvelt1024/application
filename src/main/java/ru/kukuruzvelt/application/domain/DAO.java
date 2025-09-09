@@ -39,7 +39,7 @@ public class DAO {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("DAO CREATED");
+        //System.out.println("DAO CREATED");
     }
 
     public List<MovieEntity> getListOfEntities(){
@@ -99,6 +99,8 @@ public class DAO {
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getYear));
         if (sortType.contentEquals("duration"))
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getDuration));
+        if (sortType.contentEquals("genre"))
+            this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getGenre));
 
     }
 

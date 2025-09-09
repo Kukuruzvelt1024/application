@@ -1,5 +1,7 @@
 package ru.kukuruzvelt.application.controllers;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.spi.LoggingEventBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +10,7 @@ import ru.kukuruzvelt.application.Application;
 import ru.kukuruzvelt.application.domain.DAO;
 import ru.kukuruzvelt.application.domain.MovieEntity;
 
-
+@Slf4j
 @Controller
 public class VideoController {
 
@@ -16,7 +18,7 @@ public class VideoController {
     public String videoController1(Model model, @PathVariable String name){
         try {
             MovieEntity me = new DAO(Application.sourceBase).findByWebMapping(name);
-            System.out.println("Movie Mapping \n" + me.toString());
+            var loggingEventBuilder = log.atDebug();
             model.addAttribute("pageTitle", me.getTitleRussian());
             model.addAttribute("page", "file/" + name);
             return "video";

@@ -56,9 +56,18 @@ public class FileController {
         return (os) -> {
             readAndWrite(videoFileStream, os);
         };
+    }
 
-
-
+    @GetMapping("/assets/r")
+    public StreamingResponseBody getAsset(
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws IOException {
+        final InputStream videoFileStream = new FileInputStream("B:\\assets\\sda.jpg");
+        long size = videoFileStream.available();
+        System.out.println("Asset loaded");
+        return (os) -> {
+            readAndWrite(videoFileStream, os);
+        };
     }
 
     private void readAndWrite(final InputStream is, OutputStream os)
