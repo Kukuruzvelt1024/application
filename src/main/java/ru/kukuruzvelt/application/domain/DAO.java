@@ -1,7 +1,5 @@
 package ru.kukuruzvelt.application.domain;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,6 +12,7 @@ public class DAO {
 
     private String source;
     private List<MovieEntity> localDatabaseCopy = new ArrayList<>();
+    public DAO instance;
 
     public DAO(String source){
         this.source = source;
@@ -39,7 +38,14 @@ public class DAO {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //System.out.println("DAO CREATED");
+        System.out.println("DAO CREATED");
+    }
+
+    public DAO getInstance(String source){
+        if (this.instance == null){
+            return new DAO(source);
+        }
+        return this.instance;
     }
 
     public List<MovieEntity> getListOfEntities(){

@@ -7,9 +7,7 @@
         body {
             background-color: #424141;
             color: white; * Цвет текста */
-
         }
-
         a:link { color: white } /* Цвет непросмотренной ссылки */
         a:visited { color: white; } /* Цвет посещенной ссылки */
         a:hover { color: red; } /* Цвет при наведении */
@@ -37,20 +35,33 @@
             background-repeat: no-repeat;
             background-repeat: repeat-y;
         }
+        table, th, td{
+            border: 3px solid white;
+            text-align: center;
+        }
 
     </style>
 </head>
 <body>
     <div class="plenka"/>
+    <div class="rightplenka" align="right"/>
     <h1>Каталог</h1>
     <h2>Сортировка</h2>
     <div class="sort"><a href="/catalog?sortby=year">по году</a></div>
     <div class="sort"><a href="/catalog?sortby=ru" class="sort">по названию</a></div>
     <div class="sort"><a href="/catalog?sortby=duration" class="sort">о продолжительности</a></div>
     <div class="sort"><a href="/catalog?sortby=genre" class="sort">по жанру</a></div>
-    <div class="container">
+    <table class="movie_blocks_table" align="center">
+        <tr th:each="video, status : ${MoviesList}">
+            <td><a th:href="'/movie/' + ${video.WebMapping}"><img th:src="'/poster/' + ${video.WebMapping}" th:alt="${video.TitleRussian}" width="120" height="180" /></a>
+                <p th:text="${video.TitleRussian}"/>
+                <p th:text="${video.Country} + ' / ' + ${video.Genre} + ' / ' + ${video.Duration} + ' мин. / ' + ${video.Year}"/>
+            </td>
+        </tr>
+    </table>
+        <!--
         <div class="hollow-rectangle" th:each="video, status : ${MoviesList}" th:style="'position: absolute;
-            left: '+${550 + 250*((status.index)%4)} + 'px; top: ' + ${380 + 450*((status.index)/4)} +'px'">
+            left: '+${550 + 250*((status.index)%4)} + 'px; top: ' + ${680 + 450*((status.index)/4)} +'px'">
 
             <img th:src="'/poster/' + ${video.WebMapping}" th:alt="${video.TitleRussian}" width="120" height="180" style="position:relative; left: 50px;"/>
             <a th:href="'/movie/' + ${video.WebMapping}"><p th:text="${video.TitleRussian}"/></a>
@@ -60,7 +71,7 @@
             <p th:text="'Продолжительность: ' + ${video.Duration} + ' мин.'"/>
 
         </div>
-    </div>
-    <p>©2025 Kukuruzvelt. Все права в уязвимости.</p>
+    --->
+    <p align="center">©2025 Kukuruzvelt. Все права в уязвимости.</p>
     </body>
  </html>
