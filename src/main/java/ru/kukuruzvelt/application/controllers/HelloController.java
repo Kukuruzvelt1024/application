@@ -27,8 +27,9 @@ public class HelloController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<String> base(){
-        return new ResponseEntity<String>("FG", HttpStatus.OK);
+    public String base(HttpServletRequest request){
+        System.out.println("Access to Base PAGE from: " + request.getRemoteAddr());
+        return "redirect:/catalog";
     }
 
     @GetMapping(value = "/index")

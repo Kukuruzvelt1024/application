@@ -3,19 +3,30 @@ package ru.kukuruzvelt.application.domain;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class DAO {
 
     private String source;
     private List<MovieEntity> localDatabaseCopy = new ArrayList<>();
+    private static List<MovieEntity> databaseCache = new ArrayList<>();
     public DAO instance;
+    public TimerTask task;
+    public Timer timer;
 
     public DAO(String source){
         this.source = source;
+        this.updateInformation();
+    }
+
+    public DAO getInstance(String source){
+        if (this.instance == null){
+            return new DAO(source);
+        }
+        return this.instance;
+    }
+
+    public void updateInformation(){
         try {
             List<String> list = Files.readAllLines(Paths.get(source));
             Iterator<String> iterator = list.iterator();
@@ -33,19 +44,14 @@ public class DAO {
                     entity.setTitleRussian(iterator.next().split(" = ")[1]);
                     entity.setTitleOriginal(iterator.next().split(" = ")[1]);
                     this.localDatabaseCopy.add(entity);
+                    databaseCache = List.copyOf(this.localDatabaseCopy);
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         System.out.println("DAO CREATED");
-    }
 
-    public DAO getInstance(String source){
-        if (this.instance == null){
-            return new DAO(source);
-        }
-        return this.instance;
     }
 
     public List<MovieEntity> getListOfEntities(){
@@ -75,6 +81,15 @@ public class DAO {
     }
 
     public MovieEntity findByWebMapping(String webMapping) throws NullPointerException{
+        Iterator<MovieEntity> staticIterator = databaseCache.iterator();
+        while (staticIterator.hasNext()){
+            MovieEntity me = staticIterator.next();
+            if (me.getWebMapping().equalsIgnoreCase(webMapping)){
+                return me;
+            }
+        }
+
+
         Iterator<MovieEntity> it = this.localDatabaseCopy.iterator();
         while (it.hasNext()){
             MovieEntity me = it.next();
@@ -107,7 +122,15 @@ public class DAO {
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getDuration));
         if (sortType.contentEquals("genre"))
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getGenre));
+    }
 
+    class UpdateScheduler extends TimerTask{
+
+
+        @Override
+        public void run() {
+
+        }
     }
 
 }
