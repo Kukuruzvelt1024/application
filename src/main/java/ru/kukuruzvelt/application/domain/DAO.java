@@ -9,25 +9,25 @@ public class DAO {
 
     private String source;
     private List<MovieEntity> localDatabaseCopy = new ArrayList<>();
-    private static List<MovieEntity> databaseCache = new ArrayList<>();
-    public DAO instance;
-    public TimerTask task;
-    public Timer timer;
+    private static List<MovieEntity> localDatabaseCopyCache = new ArrayList<>(211470000);
+    private boolean isPrepared = false;
+    private Set<String> genres = new HashSet();
 
-    public DAO(String source){
+
+    public static DAO getInstance(String source){
+        return new DAO(source);
+    }
+
+    private DAO(String source){
         this.source = source;
-        this.updateInformation();
     }
 
-    public DAO getInstance(String source){
-        if (this.instance == null){
-            return new DAO(source);
-        }
-        return this.instance;
+    public void prepareData(){
+        this.loadDataFromExternalSource();
     }
-
-    public void updateInformation(){
+    private void loadDataFromExternalSource(){
         try {
+            localDatabaseCopyCache.clear();
             List<String> list = Files.readAllLines(Paths.get(source));
             Iterator<String> iterator = list.iterator();
             while(iterator.hasNext()) {
@@ -40,25 +40,42 @@ public class DAO {
                     entity.setYear(iterator.next().split(" = ")[1]);
                     entity.setCountry(iterator.next().split(" = ")[1]);
                     entity.setGenre(iterator.next().split(" = ")[1]);
+                    genres.add(entity.getGenre());
                     entity.setDuration(Integer.parseInt((iterator.next().split(" = ")[1])));
                     entity.setTitleRussian(iterator.next().split(" = ")[1]);
                     entity.setTitleOriginal(iterator.next().split(" = ")[1]);
                     this.localDatabaseCopy.add(entity);
-                    databaseCache = List.copyOf(this.localDatabaseCopy);
+                    localDatabaseCopyCache.add(entity);
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("DAO CREATED");
 
+        System.out.println("Загрузка данных из внешнего источника");
+        System.out.println("Cache size: " + localDatabaseCopyCache.size());
     }
 
     public List<MovieEntity> getListOfEntities(){
+        this.loadDataFromExternalSource();
+        this.debugGenres();
         return this.localDatabaseCopy;
     }
 
+    public List<MovieEntity> getFilteredListOfEntities(){
+        //this.localDatabaseCopy.stream().filter();
+        return null;
+    }
+
     public MovieEntity findByOriginalTitle(String title){
+        Iterator<MovieEntity> cachedListIterator = localDatabaseCopyCache.iterator();
+        while (cachedListIterator.hasNext()){
+            MovieEntity me = cachedListIterator.next();
+            if (me.getWebMapping().equalsIgnoreCase(title)){
+                return me;
+            }
+        }
+        this.loadDataFromExternalSource();
         Iterator<MovieEntity> it = this.localDatabaseCopy.iterator();
         while (it.hasNext()){
             MovieEntity me = it.next();
@@ -70,6 +87,14 @@ public class DAO {
     }
 
     public MovieEntity findByRussianTitle(String title){
+        Iterator<MovieEntity> cachedListIterator = localDatabaseCopyCache.iterator();
+        while (cachedListIterator.hasNext()){
+            MovieEntity me = cachedListIterator.next();
+            if (me.getWebMapping().equalsIgnoreCase(title)){
+                return me;
+            }
+        }
+        this.loadDataFromExternalSource();
         Iterator<MovieEntity> it = this.localDatabaseCopy.iterator();
         while (it.hasNext()){
             MovieEntity me = it.next();
@@ -81,15 +106,14 @@ public class DAO {
     }
 
     public MovieEntity findByWebMapping(String webMapping) throws NullPointerException{
-        Iterator<MovieEntity> staticIterator = databaseCache.iterator();
-        while (staticIterator.hasNext()){
-            MovieEntity me = staticIterator.next();
+        Iterator<MovieEntity> cachedListIterator = localDatabaseCopyCache.iterator();
+        while (cachedListIterator.hasNext()){
+            MovieEntity me = cachedListIterator.next();
             if (me.getWebMapping().equalsIgnoreCase(webMapping)){
                 return me;
             }
         }
-
-
+        this.loadDataFromExternalSource();
         Iterator<MovieEntity> it = this.localDatabaseCopy.iterator();
         while (it.hasNext()){
             MovieEntity me = it.next();
@@ -101,6 +125,14 @@ public class DAO {
     }
 
     public MovieEntity findByFilePath(String filePath){
+        Iterator<MovieEntity> cachedListIterator = localDatabaseCopyCache.iterator();
+        while (cachedListIterator.hasNext()){
+            MovieEntity me = cachedListIterator.next();
+            if (me.getWebMapping().equalsIgnoreCase(filePath)){
+                return me;
+            }
+        }
+        this.loadDataFromExternalSource();
         Iterator<MovieEntity> it = this.localDatabaseCopy.iterator();
         while (it.hasNext()){
             MovieEntity me = it.next();
@@ -122,6 +154,13 @@ public class DAO {
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getDuration));
         if (sortType.contentEquals("genre"))
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getGenre));
+    }
+
+    private void debugGenres(){
+        Iterator<String> iterator= genres.iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
     }
 
     class UpdateScheduler extends TimerTask{

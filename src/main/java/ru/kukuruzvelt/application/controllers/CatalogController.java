@@ -24,9 +24,13 @@ public class CatalogController {
     public String getCatalog(Model model,
                              HttpServletRequest request,
                              HttpServletResponse response,
-    @RequestParam(name = "sortby", required = false, defaultValue = "RussianTitle") String sortingType){
-        System.out.println("Access to catalog from: " + request.getRemoteAddr() + "; Sort type: " + sortingType);
-        DAO dao = new DAO(Application.sourceBase);
+    @RequestParam(name = "sortby", required = false, defaultValue = "RussianTitle") String sortingType,
+    @RequestParam(name = "filter", required = false, defaultValue = "order") String filter){
+        System.out.println("Доступ к каталогу от: " + request.getRemoteAddr() + "; Тип сортировки: " + sortingType
+        + "; Фильтр по: " + filter);
+        DAO dao = DAO.getInstance(Application.sourceBase);
+        dao.prepareData();
+        //dao.filterBy();
         dao.sortBy(sortingType);
         List<MovieEntity> list = dao.getListOfEntities();
 

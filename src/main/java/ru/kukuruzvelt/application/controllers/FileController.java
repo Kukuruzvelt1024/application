@@ -35,22 +35,24 @@ public class FileController {
     private MyResourceHttpRequestHandler handler;
 
     @GetMapping("/file/{name}")
-    public void getSomeFile(HttpServletRequest request,
-                        HttpServletResponse response, @PathVariable String name)
-            throws ServletException, IOException {
+    public void getVideoFile(HttpServletRequest request,
+                             HttpServletResponse response,
+                             @PathVariable String name)
+                             throws ServletException, IOException {
+        System.out.println("Отправка видеофрагмента: " + name + " на адрес: " + request.getRemoteAddr());
         File source = new File(sourceFolder, name);
         request.setAttribute(MyResourceHttpRequestHandler.ATTR_FILE, source);
         handler.handleRequest(request, response);
-        System.out.println(name + " file requested");
+
     }
 
     @GetMapping("/poster/{title}")
     public StreamingResponseBody getPoster(@PathVariable String title,
                                            HttpServletRequest request,
                                            HttpServletResponse response) throws IOException {
-        DAO dao = new DAO(Application.sourceBase);
+        DAO dao = DAO.getInstance(Application.sourceBase);
         MovieEntity me = dao.findByWebMapping(title);
-        System.out.println(me.getPosterPath());
+        System.out.println("Отправка постера: " + me.getPosterPath());
         final InputStream videoFileStream = new FileInputStream(me.getPosterPath());
         long size = videoFileStream.available();
         return (os) -> {
@@ -64,7 +66,7 @@ public class FileController {
                                            HttpServletResponse response) throws IOException {
         final InputStream videoFileStream = new FileInputStream("B:\\assets\\sda.jpg");
         long size = videoFileStream.available();
-        System.out.println("Asset loaded");
+        System.out.println("Отправка ассета");
         return (os) -> {
             readAndWrite(videoFileStream, os);
         };
@@ -88,7 +90,7 @@ public class FileController {
         @Override
         protected Resource getResource(HttpServletRequest request) throws IOException {
             final File file = (File) request.getAttribute(ATTR_FILE);
-            return new FileSystemResource(new File(new DAO(Application.sourceBase).
+            return new FileSystemResource(new File(DAO.getInstance(Application.sourceBase).
                     findByWebMapping(request.getRequestURL().
                             toString().
                             split("/file/")[1]).getFilePath()));

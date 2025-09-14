@@ -63,7 +63,7 @@ public class HelloController {
 
     @GetMapping("/reader")
     public String reader(){
-        DAO dao = new DAO("B:\\names\\database_substitute.txt");
+        DAO dao = DAO.getInstance("B:\\names\\database_substitute.txt");
         List<MovieEntity> list = dao.getListOfEntities();
         Iterator<MovieEntity> iterator = list.iterator();
         while(iterator.hasNext()){

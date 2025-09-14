@@ -17,8 +17,9 @@ public class VideoController {
     @GetMapping("/movie/{name}")
     public String videoController1(Model model, @PathVariable String name){
         try {
-            MovieEntity me = new DAO(Application.sourceBase).findByWebMapping(name);
+            MovieEntity me = DAO.getInstance(Application.sourceBase).findByWebMapping(name);
             var loggingEventBuilder = log.atDebug();
+            System.out.println("Доступ к странице просмотра: " + name);
             model.addAttribute("pageTitle", me.getTitleRussian());
             model.addAttribute("page", "file/" + name);
             return "video";
