@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import ru.kukuruzvelt.application.Application;
 import ru.kukuruzvelt.application.domain.DAO;
 import ru.kukuruzvelt.application.domain.MovieEntity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -61,34 +63,16 @@ public class HelloController {
         return "welcome";
     }
 
-    @GetMapping("/reader")
-    public String reader(){
-        DAO dao = DAO.getInstance("B:\\names\\database_substitute.txt");
-        List<MovieEntity> list = dao.getListOfEntities();
-        Iterator<MovieEntity> iterator = list.iterator();
-        while(iterator.hasNext()){
-            System.out.println(iterator.next());
-        }
-        System.out.println("Find by WebMapping");
-        System.out.println(dao.findByWebMapping("twelvemonkeys"));
-        System.out.println(dao.findByWebMapping("first_blood"));
-        System.out.println("Find by Name");
-        System.out.println(dao.findByOriginalTitle("12 monkeys"));
-        System.out.println(dao.findByOriginalTitle("First Blood"));
-        System.out.println("Find by FilePath");
-        System.out.println(dao.findByFilePath("B:\\src\\twelve_monkeys.mp4"));
-        System.out.println(dao.findByFilePath("B:\\src\\rambo.mp4"));
-        System.out.println("Find by Russian");
-        System.out.println(dao.findByRussianTitle("Рэмбо. Первая Кровь"));
-        System.out.println(dao.findByRussianTitle("12 Обезьян"));
-
-
-        return "index";
-    }
 
 
 
+@GetMapping("/genres")
+    public ResponseEntity<List<String>> getAllGenres(){
+        DAO dao = DAO.getInstance(Application.sourceBase);
+        dao.prepareData();
+        return new ResponseEntity<List<String>>(dao.getAllGenres(), HttpStatus.OK);
 
+}
 
 
 

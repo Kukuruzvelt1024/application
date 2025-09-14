@@ -24,17 +24,21 @@ public class CatalogController {
     public String getCatalog(Model model,
                              HttpServletRequest request,
                              HttpServletResponse response,
-    @RequestParam(name = "sortby", required = false, defaultValue = "RussianTitle") String sortingType,
-    @RequestParam(name = "filter", required = false, defaultValue = "order") String filter){
+    @RequestParam(name = "sortby", required = false, defaultValue = "year") String sortingType,
+    @RequestParam(name = "year", required = false, defaultValue = "-1") String yearRequired,
+    @RequestParam(name = "genre", required = false, defaultValue = "all") String genreRequired){
         System.out.println("Доступ к каталогу от: " + request.getRemoteAddr() + "; Тип сортировки: " + sortingType
-        + "; Фильтр по: " + filter);
-        DAO dao = DAO.getInstance(Application.sourceBase);
-        dao.prepareData();
-        //dao.filterBy();
-        dao.sortBy(sortingType);
-        List<MovieEntity> list = dao.getListOfEntities();
+        + "; Фильтр по: " + yearRequired);
+        DAO dao = DAO.getInstance(Application.sourceBase).
+                prepareData().
+                filterByYear(Integer.parseInt(yearRequired)).
+                filterByGenre(genreRequired).
+                sortBy(sortingType);
 
-        model.addAttribute("MoviesList", list);
+        model.addAttribute("listOfGenres", dao.getAllGenres());
+        model.addAttribute("listOfYears", dao.getAllYears());
+        model.addAttribute("listOfMovies", dao.getListOfEntities());
+
         return "catalog";
     }
 }

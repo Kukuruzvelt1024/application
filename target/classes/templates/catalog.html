@@ -39,6 +39,9 @@
             border: 3px solid white;
             text-align: center;
         }
+        .filter{
+            text-align: center;
+        }
 
     </style>
 </head>
@@ -49,13 +52,37 @@
     <h2>Сортировка</h2>
     <div class="sort"><a href="/catalog?sortby=year">по году</a></div>
     <div class="sort"><a href="/catalog?sortby=ru" class="sort">по названию</a></div>
-    <div class="sort"><a href="/catalog?sortby=duration" class="sort">о продолжительности</a></div>
-    <div class="sort"><a href="/catalog?sortby=genre" class="sort">по жанру</a></div>
+    <div class="sort"><a href="/catalog?sortby=duration" class="sort">по продолжительности</a></div>
+    <h2>Фильтр</h2>
+    <details class="filter">
+        <summary>по жанру</summary>
+        <table class ="genres" align="center">
+            <tr>
+                <td><a href="?all"><p>Все</p></a></td>
+                <td th:each="genre: ${listOfGenres}">
+                    <a th:href="'?genre=' + ${genre}"><p th:text="${genre}"/></a>
+                </td>
+            </tr>
+        </table>
+    </details>
+    <details class="filter">
+        <summary>по году</summary>
+        <table class ="years" align="center">
+            <tr>
+                <td><a href="?all"><p>Все</p></a></td>
+                <td th:each="year: ${listOfYears}">
+                    <a th:href="'?year=' + ${year}"><p th:text="${year}"/></a>
+                </td>
+            </tr>
+        </table>
+    </details>
+
     <table class="movie_blocks_table" align="center">
-        <tr th:each="video, status : ${MoviesList}">
+        <tr th:each="video, status : ${listOfMovies}">
             <td><a th:href="'/movie/' + ${video.WebMapping}"><img th:src="'/poster/' + ${video.WebMapping}" th:alt="${video.TitleRussian}" width="120" height="180" /></a>
                 <p th:text="${video.TitleRussian}"/>
                 <p th:text="${video.Country} + ' / ' + ${video.Genre} + ' / ' + ${video.Duration} + ' мин. / ' + ${video.Year}"/>
+
             </td>
         </tr>
     </table>
@@ -72,6 +99,6 @@
 
         </div>
     --->
-    <p align="center">©2025 Kukuruzvelt. Все права в уязвимости.</p>
+    <p align="center">©2025 Kukuruzvelt. Никаких прав, только обязанности.</p>
     </body>
  </html>

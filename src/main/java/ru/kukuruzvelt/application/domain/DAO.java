@@ -4,27 +4,26 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DAO {
 
     private String source;
     private List<MovieEntity> localDatabaseCopy = new ArrayList<>();
-    private static List<MovieEntity> localDatabaseCopyCache = new ArrayList<>(211470000);
+    private static List<MovieEntity> localDatabaseCopyCache = new ArrayList<>(1024);
     private boolean isPrepared = false;
     private Set<String> genres = new HashSet();
-
+    private Set<Integer> years = new HashSet();
 
     public static DAO getInstance(String source){
         return new DAO(source);
     }
 
-    private DAO(String source){
-        this.source = source;
+    public DAO prepareData(){
+        this.loadDataFromExternalSource();
+        return this;
     }
 
-    public void prepareData(){
-        this.loadDataFromExternalSource();
-    }
     private void loadDataFromExternalSource(){
         try {
             localDatabaseCopyCache.clear();
@@ -37,10 +36,17 @@ public class DAO {
                     entity.setWebMapping(iterator.next().split(" = ")[1]);
                     entity.setFilePath(iterator.next().split(" = ")[1]);
                     entity.setPosterPath(iterator.next().split(" = ")[1]);
-                    entity.setYear(iterator.next().split(" = ")[1]);
+                    entity.setYear(Integer.parseInt(iterator.next().split(" = ")[1]));
+                    years.add(entity.getYear());
                     entity.setCountry(iterator.next().split(" = ")[1]);
-                    entity.setGenre(iterator.next().split(" = ")[1]);
-                    genres.add(entity.getGenre());
+                    String localGenres;
+                    localGenres = iterator.next().split(" = ")[1];
+                    String[] allGenres = localGenres.split(", ");
+                    entity.setGenre(allGenres);
+                    for (int i = 0; i < allGenres.length; i++){
+                        genres.add(allGenres[i]);
+                    }
+
                     entity.setDuration(Integer.parseInt((iterator.next().split(" = ")[1])));
                     entity.setTitleRussian(iterator.next().split(" = ")[1]);
                     entity.setTitleOriginal(iterator.next().split(" = ")[1]);
@@ -52,19 +58,46 @@ public class DAO {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Загрузка данных из внешнего источника");
-        System.out.println("Cache size: " + localDatabaseCopyCache.size());
+        System.out.println("Полная загрузка данных из внешнего источника");
+        System.out.println("Размер кэша: " + localDatabaseCopyCache.size());
+        System.out.println("Размер ДАО-объекта: " + this.localDatabaseCopy.size());
+        System.out.println("Количество жанров: " + this.genres.size());
+        System.out.println("Количество годов: " + this.years.size());
     }
 
     public List<MovieEntity> getListOfEntities(){
-        this.loadDataFromExternalSource();
         this.debugGenres();
         return this.localDatabaseCopy;
     }
 
-    public List<MovieEntity> getFilteredListOfEntities(){
-        //this.localDatabaseCopy.stream().filter();
-        return null;
+    public List<String> getAllGenres(){
+        ArrayList<String> listOfUniqueGenres = new ArrayList<>(this.genres);
+        Collections.sort(listOfUniqueGenres);
+        return listOfUniqueGenres;
+    }
+
+    public List<Integer> getAllYears(){
+        ArrayList<Integer> listOfYears = new ArrayList<>(this.years);
+        Collections.sort(listOfYears);
+        return listOfYears;
+    }
+
+    public DAO filterByYear(int yearRequired){
+        if(yearRequired >= 1890)
+        this.localDatabaseCopy = this.localDatabaseCopy.
+                stream().
+                filter(e -> e.getYear() == yearRequired).
+                collect(Collectors.toList());
+        return this;
+    }
+
+    public DAO filterByGenre(String genreRequired){
+        if (!genreRequired.contentEquals("all")) {
+            this.localDatabaseCopy = this.localDatabaseCopy.
+                    stream().
+                    filter(e -> e.containsGenre(genreRequired)).collect(Collectors.toList());
+        }
+        return this;
     }
 
     public MovieEntity findByOriginalTitle(String title){
@@ -143,7 +176,7 @@ public class DAO {
         return null;
     }
 
-    public void sortBy(String sortType){
+    public DAO sortBy(String sortType) {
         if (sortType.contentEquals("eng"))
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getTitleOriginal));
         if (sortType.contentEquals("ru"))
@@ -152,15 +185,19 @@ public class DAO {
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getYear));
         if (sortType.contentEquals("duration"))
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getDuration));
-        if (sortType.contentEquals("genre"))
-            this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getGenre));
+        return this;
     }
 
     private void debugGenres(){
         Iterator<String> iterator= genres.iterator();
         while (iterator.hasNext()){
-            System.out.println(iterator.next());
+            System.out.print(iterator.next()+ "; ");
         }
+        System.out.println();
+    }
+
+    private DAO(String source){
+        this.source = source;
     }
 
     class UpdateScheduler extends TimerTask{

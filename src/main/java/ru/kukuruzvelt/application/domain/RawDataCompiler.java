@@ -23,20 +23,20 @@ public class RawDataCompiler {
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getYear));
         if (sortType.contentEquals("duration"))
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getDuration));
-        if (sortType.contentEquals("genre"))
-            this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getGenre));
+        //if (sortType.contentEquals("genre"))
+          //  this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getGenre));
     }
-
-    public List<MovieEntity> getAllEntriesByGenre(String genre){
+//ПЕРЕДЕЛАТЬ! ПОИСК ОСУЩЕСТВЛЯЕТСЯ ТОЛЬКО ПО 1 ВХОЖДЕНИЮ, А НУЖНО ПРОЙТИСЬ ПО ВСЕМУ МАССИВУ
+    /*public List<MovieEntity> getAllEntriesByGenre(String genre){
         Iterator<MovieEntity> it = this.localDatabaseCopy.iterator();
         while (it.hasNext()){
             MovieEntity me = it.next();
-            if (me.getGenre().equalsIgnoreCase(genre)){
+            if (me.getGenre()[0].equalsIgnoreCase(genre)){
                 return Collections.singletonList(me);
             }
         }
         return null;
-    }
+    }*/
 
     public List<MovieEntity> getAllEntriesByYear(int year){
         return null;
