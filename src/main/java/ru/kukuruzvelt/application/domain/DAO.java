@@ -14,6 +14,7 @@ public class DAO {
     private boolean isPrepared = false;
     private Set<String> genres = new HashSet();
     private Set<Integer> years = new HashSet();
+    private Set<String> countries = new HashSet();
 
     public static DAO getInstance(String source){
         return new DAO(source);
@@ -139,13 +140,20 @@ public class DAO {
     }
 
     public MovieEntity findByWebMapping(String webMapping) throws NullPointerException{
-        Iterator<MovieEntity> cachedListIterator = localDatabaseCopyCache.iterator();
+       /* Iterator<MovieEntity> cachedListIterator = localDatabaseCopyCache.iterator();
         while (cachedListIterator.hasNext()){
             MovieEntity me = cachedListIterator.next();
             if (me.getWebMapping().equalsIgnoreCase(webMapping)){
                 return me;
             }
-        }
+        }*/
+        Optional<MovieEntity> optionalSearchResult =
+                localDatabaseCopyCache.
+                        stream().
+                        filter(me-> me.getWebMapping().equalsIgnoreCase(webMapping)).
+                        findFirst();
+        if(optionalSearchResult.isPresent())
+            return optionalSearchResult.get();
         this.loadDataFromExternalSource();
         Iterator<MovieEntity> it = this.localDatabaseCopy.iterator();
         while (it.hasNext()){

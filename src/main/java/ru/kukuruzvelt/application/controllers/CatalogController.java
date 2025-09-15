@@ -27,8 +27,11 @@ public class CatalogController {
     @RequestParam(name = "sortby", required = false, defaultValue = "year") String sortingType,
     @RequestParam(name = "year", required = false, defaultValue = "-1") String yearRequired,
     @RequestParam(name = "genre", required = false, defaultValue = "all") String genreRequired){
-        System.out.println("Доступ к каталогу от: " + request.getRemoteAddr() + "; Тип сортировки: " + sortingType
-        + "; Фильтр по: " + yearRequired);
+        System.out.println(
+                        "Доступ к каталогу от: " + request.getRemoteAddr() +
+                        "; Тип сортировки: " + sortingType +
+                        "; Запрошенный год: " + yearRequired +
+                        "; Запрошенный жанр:" + genreRequired);
         DAO dao = DAO.getInstance(Application.sourceBase).
                 prepareData().
                 filterByYear(Integer.parseInt(yearRequired)).

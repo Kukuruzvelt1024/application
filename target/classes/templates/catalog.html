@@ -22,13 +22,7 @@
             text-align: center;
         }
         .sort{text-align: center;}
-        .hollow-rectangle {
-            width: 240px; /* Ширина прямоугольника */
-            height: 400px; /* Высота прямоугольника */
-            border: 2px solid white; /* Белый контур толщиной 2px */
-            background-color: transparent; /* Или background-color: rgba(0,0,0,0); */
-            box-sizing: border-box; /* Важно для корректного отображения границы */
-        }
+
         .plenka{
             background-image: url(/assets/r);
             background-size: 100px 50px;
@@ -40,6 +34,10 @@
             text-align: center;
         }
         .filter{
+            text-align: center;
+        }
+        .years, .genres{
+            border: 1px solid white;
             text-align: center;
         }
 
@@ -86,19 +84,6 @@
             </td>
         </tr>
     </table>
-        <!--
-        <div class="hollow-rectangle" th:each="video, status : ${MoviesList}" th:style="'position: absolute;
-            left: '+${550 + 250*((status.index)%4)} + 'px; top: ' + ${680 + 450*((status.index)/4)} +'px'">
-
-            <img th:src="'/poster/' + ${video.WebMapping}" th:alt="${video.TitleRussian}" width="120" height="180" style="position:relative; left: 50px;"/>
-            <a th:href="'/movie/' + ${video.WebMapping}"><p th:text="${video.TitleRussian}"/></a>
-            <p th:text="'Год: ' + ${video.Year}"/>
-            <p th:text="'Страна: ' + ${video.Country}"/>
-            <p th:text="'Жанр: ' + ${video.Genre}"/>
-            <p th:text="'Продолжительность: ' + ${video.Duration} + ' мин.'"/>
-
-        </div>
-    --->
     <p align="center">©2025 Kukuruzvelt. Никаких прав, только обязанности.</p>
     </body>
  </html>
