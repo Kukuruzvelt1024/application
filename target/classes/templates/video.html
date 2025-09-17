@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+
         <meta charset="UTF-8">
         <title th:text="${pageTitle}"></title>
         <style>
@@ -8,16 +9,36 @@
                 background-color: #424141;
                 color: white; * Цвет текста */
             }
-
+             a:link { color: white } /* Цвет непросмотренной ссылки */
+        a:visited { color: white; } /* Цвет посещенной ссылки */
+        a:hover { color: red; } /* Цвет при наведении */
+        a:active { color: green; } /* Цвет активной ссылки */
+            h1 {
+                font-size: 72px;
+                color = white;
+                font-family: "Impact";
+                text-align: center;
+            }
+            .template player{
+                display: flex;
+             align-items: center;
+             justify-content: center;
+            }
+            h3 {
+                font-size: 26px;
+                color = white;
+                font-family: "Impact";
+                text-align: center;
+            }
         </style>
         </head>
         <body>
-            <h1 style="margin-left: 200px"><font size="6" color="#f5f5f5" face="Impact"><p th:text="${pageTitle}"></p></font></h1>
+            <h1><p th:text="${pageTitle}"></p></h1>
             <div id="template player">
                 <video width="1280" height="729" controls>
                     <source th:src="'/'+${page}" type="video/mp4">
                 </video>
-                <p><a href="/catalog">Catalog</p>
+                <h3><a href="/catalog">В каталог</a></h3>
             </div>
 
 

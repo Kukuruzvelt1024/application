@@ -41,7 +41,7 @@ public class FileController {
                                            HttpServletResponse response) throws IOException {
         DAO dao = DAO.getInstance(Application.sourceBase);
         MovieEntity me = dao.findByWebMapping(title);
-        System.out.println("Отправка постера: " + me.getPosterPath());
+        //System.out.println("Отправка постера: " + me.getPosterPath());
         final InputStream videoFileStream = new FileInputStream(me.getPosterPath());
         long size = videoFileStream.available();
         return (os) -> {
@@ -55,7 +55,7 @@ public class FileController {
                                            HttpServletResponse response) throws IOException {
         final InputStream videoFileStream = new FileInputStream("B:\\assets\\sda.jpg");
         long size = videoFileStream.available();
-        System.out.println("Отправка ассета");
+        //System.out.println("Отправка ассета");
         return (os) -> {
             readAndWrite(videoFileStream, os);
         };

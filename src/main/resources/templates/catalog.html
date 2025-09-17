@@ -7,6 +7,7 @@
         body {
             background-color: #424141;
             color: white; * Цвет текста */
+            text-align: center;
         }
         a:link { color: white } /* Цвет непросмотренной ссылки */
         a:visited { color: white; } /* Цвет посещенной ссылки */
@@ -33,19 +34,32 @@
             border: 3px solid white;
             text-align: center;
         }
+        td:hover {
+                    background: #008080; /* Цвет фона при наведении */
+                    color: #fff; /* Цвет текста при наведении */
+        }
         .filter{
             text-align: center;
         }
-        .years, .genres{
+        .years, .genres, .countries{
             border: 1px solid white;
+            text-align: center;
+        }
+        .search form{
+            display: flex;
+             align-items: center;
+             justify-content: center;
+        }
+        footer{
             text-align: center;
         }
 
     </style>
 </head>
 <body>
-    <div class="plenka"/>
-    <div class="rightplenka" align="right"/>
+    <!--<div class="plenka"/>
+
+    -->
     <h1>Каталог</h1>
     <h2>Сортировка</h2>
     <div class="sort"><a href="/catalog?sortby=year">по году</a></div>
@@ -74,16 +88,34 @@
             </tr>
         </table>
     </details>
-
+    <details class="filter">
+        <summary>по стране</summary>
+        <table class ="countries" align="center">
+            <tr>
+                <td><a href="?all"><p>Все</p></a></td>
+                <td th:each="country: ${listOfCountries}">
+                    <a th:href="'?country=' + ${country}"><p th:text="${country}"/></a>
+                </td>
+            </tr>
+        </table>
+    </details>
+    <div class="search form">
+        <form>
+            <p><input type="text" name="search" placeholder="Название" size="18" /></p>
+            <button type="submit">Найти</button>
+        </form>
+    </div>
     <table class="movie_blocks_table" align="center">
         <tr th:each="video, status : ${listOfMovies}">
             <td><a th:href="'/movie/' + ${video.WebMapping}"><img th:src="'/poster/' + ${video.WebMapping}" th:alt="${video.TitleRussian}" width="120" height="180" /></a>
-                <p th:text="${video.TitleRussian}"/>
-                <p th:text="${video.Country} + ' / ' + ${video.Genre} + ' / ' + ${video.Duration} + ' мин. / ' + ${video.Year}"/>
+                <a th:href="'/movie/' + ${video.WebMapping}"><p th:text="${video.TitleRussian}"/></a>
+                <p th:text="${video.getCountriesAsString()} + ' / ' + ${video.getGenresAsString()} + ' / ' + ${video.Duration} + ' мин. / ' + ${video.Year}"/>
 
             </td>
         </tr>
     </table>
-    <p align="center">©2025 Kukuruzvelt. Никаких прав, только обязанности.</p>
+        <footer>
+            <p>©2025 Kukuruzvelt. Никаких прав, только обязанности.</p>
+        </footer>
     </body>
  </html>

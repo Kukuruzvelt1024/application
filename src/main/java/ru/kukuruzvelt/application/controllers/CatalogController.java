@@ -1,21 +1,21 @@
 package ru.kukuruzvelt.application.controllers;
 
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kukuruzvelt.application.Application;
 import ru.kukuruzvelt.application.domain.DAO;
 import ru.kukuruzvelt.application.domain.MovieEntity;
 
-
-import java.util.Comparator;
 import java.util.List;
+
 
 @Controller
 public class CatalogController {
@@ -24,24 +24,46 @@ public class CatalogController {
     public String getCatalog(Model model,
                              HttpServletRequest request,
                              HttpServletResponse response,
-    @RequestParam(name = "sortby", required = false, defaultValue = "year") String sortingType,
-    @RequestParam(name = "year", required = false, defaultValue = "-1") String yearRequired,
-    @RequestParam(name = "genre", required = false, defaultValue = "all") String genreRequired){
+                             @RequestParam(name = "sortby", required = false, defaultValue = "ru") String sortingType,
+                             @RequestParam(name = "year", required = false, defaultValue = "-1") String yearRequired,
+                             @RequestParam(name = "genre", required = false, defaultValue = "all") String genreRequired,
+                             @RequestParam(name = "country", required = false, defaultValue = "all") String countryRequired,
+                             @RequestParam(name = "search", required = false, defaultValue = "null") String searchRequest) {
         System.out.println(
                         "Доступ к каталогу от: " + request.getRemoteAddr() +
                         "; Тип сортировки: " + sortingType +
                         "; Запрошенный год: " + yearRequired +
-                        "; Запрошенный жанр:" + genreRequired);
+                        "; Запрошенный жанр:" + genreRequired +
+                        "; Запрошенная страна: " + countryRequired +
+                        "; Поиск по тексту: " + searchRequest);
         DAO dao = DAO.getInstance(Application.sourceBase).
                 prepareData().
                 filterByYear(Integer.parseInt(yearRequired)).
                 filterByGenre(genreRequired).
+                filterByCountry(countryRequired).
+                filterBySearchRequest(searchRequest).
                 sortBy(sortingType);
-
         model.addAttribute("listOfGenres", dao.getAllGenres());
         model.addAttribute("listOfYears", dao.getAllYears());
+        model.addAttribute("listOfCountries", dao.getAllCountries());
         model.addAttribute("listOfMovies", dao.getListOfEntities());
-
+        System.out.println(response.getContentType());
         return "catalog";
     }
+
+    @GetMapping("/restcatalog")
+    public String searchForMovie() {
+        return "restcatalog";
+    }
+
+    @GetMapping("/catalogjson")
+    public ResponseEntity<List<MovieEntity>> searchForMovi1e() {
+        List<MovieEntity> list = DAO.getInstance(Application.sourceBase).prepareData().getListOfEntities();
+
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+
+
 }
