@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import ru.kukuruzvelt.application.Application;
 import ru.kukuruzvelt.application.domain.DAO;
-import ru.kukuruzvelt.application.domain.MovieEntity;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 @Controller

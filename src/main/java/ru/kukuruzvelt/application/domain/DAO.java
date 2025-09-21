@@ -1,5 +1,7 @@
 package ru.kukuruzvelt.application.domain;
 
+import ru.kukuruzvelt.application.model.MovieEntity;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

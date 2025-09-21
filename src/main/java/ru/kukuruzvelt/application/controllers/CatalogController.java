@@ -1,7 +1,6 @@
 package ru.kukuruzvelt.application.controllers;
 
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kukuruzvelt.application.Application;
 import ru.kukuruzvelt.application.domain.DAO;
-import ru.kukuruzvelt.application.domain.MovieEntity;
+import ru.kukuruzvelt.application.model.MovieEntity;
 
 import java.util.List;
 

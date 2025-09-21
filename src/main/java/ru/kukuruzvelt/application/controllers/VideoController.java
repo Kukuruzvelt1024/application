@@ -1,14 +1,13 @@
 package ru.kukuruzvelt.application.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.spi.LoggingEventBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.kukuruzvelt.application.Application;
 import ru.kukuruzvelt.application.domain.DAO;
-import ru.kukuruzvelt.application.domain.MovieEntity;
+import ru.kukuruzvelt.application.model.MovieEntity;
 
 @Slf4j
 @Controller

@@ -2,7 +2,6 @@ package ru.kukuruzvelt.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import ru.kukuruzvelt.application.domain.MovieEntity;
 
 
 @SpringBootApplication

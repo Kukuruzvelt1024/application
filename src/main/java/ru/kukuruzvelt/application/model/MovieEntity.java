@@ -1,10 +1,7 @@
-package ru.kukuruzvelt.application.domain;
+package ru.kukuruzvelt.application.model;
 
+import jakarta.persistence.Entity;
 import lombok.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -17,6 +14,8 @@ import java.util.Map;
 
 public class MovieEntity {
 
+
+    private int id;
     private String WebMapping;
     private String FilePath;
     private String PosterPath;

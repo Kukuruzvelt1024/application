@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import ru.kukuruzvelt.application.Application;
 import ru.kukuruzvelt.application.domain.DAO;
-import ru.kukuruzvelt.application.domain.MovieEntity;
+import ru.kukuruzvelt.application.model.MovieEntity;
 import java.io.*;
 
 @Controller
