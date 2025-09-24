@@ -57,43 +57,8 @@
     </style>
 </head>
 <body>
-<script>
-    function getJson(){
-    fetch("/catalogjson")
-   .then(response => {
-     if (!response.ok) {
-       throw new Error(`HTTP error! status: ${response.status}`);
-     }
-     return response.json(); // Преобразование ответа в JSON
-   })
-   .then(data => {
-     console.log(data); // Работаем с данными
-   })
-   .catch(error => {
-     console.error('Ошибка при получении данных:', error);
-   });
-}
-     getJson();
-     const movies = Array.of("s1", "s2", "s3", "s4", "s5");
-     for(let i=0; i < movies.length; i++)
-        console.log(movies[i]);
 
-     let table = document.createElement('table');
-     for(let i = 1; i < 12; i++){
-     let row = table.insertRow(); // добавим строку
-        for(let j = 1; j < 5; j++){
-            let cell = row.insertCell(); // добавим ячейки
-            cell.innerHTML = j*i;
-         }
-        }
 
- //cell1.innerHTML = 'Текст ячейки 1'; // вставим текст
-// cell2.innerHTML = 'Текст ячейки 2';
-
- // Отобразим таблицу на странице
- document.body.appendChild(table);
-
-</script>
 <h1>Каталог</h1>
 <h2>Сортировка</h2>
 <div class="sort"><a href="/catalog?sortby=year">по году</a></div>
@@ -102,31 +67,85 @@
 <h2>Фильтр</h2>
 <details class="filter">
     <summary>по жанру</summary>
-    <table class ="genres" align="center">
-        <tr>
-            <td><a href="?all"><p>Все</p></a></td>
+    <table>
+    <script>
 
+        let genrestable = document.createElement('table');
+        genrestable.setAttribute("align", "center");
+        fetch("/genresjson").then(response => {
+            if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}
+            return response.json(); // Преобразование ответа в JSON
+       })
+       .then(data => {
+            console.log(data); // Работаем с данными
+            console.log("Length=" + data.length);
+            var row = genrestable.insertRow();
+             for (const entity of data){
+                let cell = row.insertCell();
+                cell.innerHTML =
+                "<p><a href=?genre=" + entity + ">" + entity + "</a></p>"
+            }
+       })
+       .catch(error => {
+             console.error('Ошибка при получении данных:', error);
+       });
+     document.body.appendChild(genrestable);
 
-        </tr>
+    </script>
     </table>
 </details>
 <details class="filter">
     <summary>по году</summary>
-    <table class ="years" align="center">
-        <tr>
-            <td><a href="?all"><p>Все</p></a></td>
+    <script>
+        let yearstable = document.createElement('table');
+        yearstable.setAttribute("align", "center");
+        fetch("/yearsjson").then(response => {
+            if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}
+            return response.json(); // Преобразование ответа в JSON
+       })
+       .then(data => {
+            console.log(data); // Работаем с данными
+            console.log("Length=" + data.length);
+            var row = yearstable.insertRow();
+             for (const entity of data){
+                let cell = row.insertCell();
+                cell.innerHTML =
+                "<p><a href=?year=" + entity + ">" + entity + "</a></p>"
+            }
+       })
+       .catch(error => {
+             console.error('Ошибка при получении данных:', error);
+       });
+     document.body.appendChild(yearstable);
 
-            </td>
-        </tr>
-    </table>
+    </script>
 </details>
 <details class="filter">
     <summary>по стране</summary>
-    <table class ="countries" align="center">
-        <tr>
-            <td><a href="?all"><p>Все</p></a></td>
-        </tr>
-    </table>
+    <script>
+        let countriestable = document.createElement('table');
+        countriestable.setAttribute("align", "center");
+        fetch("/countriesjson").then(response => {
+            if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}
+            return response.json(); // Преобразование ответа в JSON
+       })
+       .then(data => {
+            console.log(data); // Работаем с данными
+            console.log("Length=" + data.length);
+            var row = countriestable.insertRow();
+             for (const entity of data){
+                let cell = row.insertCell();
+                cell.innerHTML =
+                "<p><a href=?country=" + entity + ">" + entity + "</a></p>"
+            }
+       })
+       .catch(error => {
+             console.error('Ошибка при получении данных:', error);
+       });
+     document.body.appendChild(countriestable);
+
+            </script>
+
 </details>
 <div class="search form">
     <form>
@@ -135,7 +154,40 @@
     </form>
 </div>
 <table class="table" align="center">
-
+    <script>
+        let table = document.createElement('table');
+        table.setAttribute("align", "center");
+        const movieEntities = new Array();
+        fetch("/catalogjson")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json(); // Преобразование ответа в JSON
+       })
+       .then(data => {
+            console.log(data); // Работаем с данными
+            console.log("Length=" + data.length);
+            var row = table.insertRow();
+            var i = 0;
+             for (const entity of data){
+                if(i == 3){
+                    var row = table.insertRow();
+                    i = 0;
+                }
+                i++
+                let cell = row.insertCell();
+                cell.innerHTML =
+                "<a href=/movie/" + entity.WebMapping +"><img src=poster/" + entity.WebMapping + " alt="+entity.TitleRussian + " width=120 height=180 /></a>" +
+                "<p><a href=/movie/"+entity.WebMapping+ ">" + entity.TitleRussian + "</a></p>" +
+                "<p>" + entity.Countries+ " / " + entity.Genres + " / " + entity.Duration + " мин. / " + entity.Year + "</p>"
+            }
+       })
+       .catch(error => {
+             console.error('Ошибка при получении данных:', error);
+       });
+     document.body.appendChild(table);
+    </script>
 </table>
 <footer>
     <p>©2025 Kukuruzvelt. Никаких прав, только обязанности.</p>

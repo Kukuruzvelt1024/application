@@ -8,9 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import ru.kukuruzvelt.application.Application;
 import ru.kukuruzvelt.application.domain.DAO;
+import ru.kukuruzvelt.application.model.MovieEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -68,6 +70,15 @@ public class HelloController {
         DAO dao = DAO.getInstance(Application.sourceBase);
         dao.prepareData();
         return new ResponseEntity<List<String>>(dao.getAllGenres(), HttpStatus.OK);
+
+}
+
+@GetMapping("/entities")
+    public ResponseEntity getAllEntities(){
+        DAO dao = DAO.getInstance(Application.sourceBase);
+        dao.prepareData();
+        dao.serializeToCsv();
+        return new ResponseEntity(dao.getListOfEntities(), HttpStatus.OK);
 
 }
 

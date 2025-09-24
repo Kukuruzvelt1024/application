@@ -2,6 +2,7 @@ package ru.kukuruzvelt.application.domain;
 
 import ru.kukuruzvelt.application.model.MovieEntity;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -60,6 +61,55 @@ public class DAO {
         System.out.println("Размер ДАО-объекта: " + this.localDatabaseCopy.size());
         System.out.println("Количество жанров: " + this.setOfUniqueGenres.size());
         System.out.println("Количество годов: " + this.setOfUniqueYears.size());
+    }
+
+    public void serializeToCsv(){
+        try(FileWriter writer = new FileWriter("A:\\append.txt", false))
+        {
+
+            Iterator<MovieEntity> iterator=this.localDatabaseCopy.iterator();
+            while(iterator.hasNext()) {
+                MovieEntity me = iterator.next();
+                StringBuilder strbuilder = new StringBuilder();
+                StringBuilder genresBuilder = new StringBuilder();
+                String genres[] = me.getGenres();
+                genresBuilder.append("{");
+                for(int i = 0; i< genres.length;i++){
+                    genresBuilder.append(genres[i]);
+                    if(i < genres.length-1) genresBuilder.append(", ");
+                }
+                genresBuilder.append("}");
+                StringBuilder countriesBuilder = new StringBuilder();
+                String countries[] = me.getCountries();
+                countriesBuilder.append("{");
+                for(int i = 0; i < countries.length;i++){
+
+                    countriesBuilder.append(countries[i]);
+                    if(i < countries.length-1) countriesBuilder.append(", ");
+                }
+                countriesBuilder.append("}");
+
+
+                        strbuilder.append(me.getDuration()).append(";")
+                        .append(me.getTitleRussian()).append(";")
+                        .append(me.getTitleOriginal()).append(";")
+                        .append(me.getFilePath().split("src")[1], 1, me.getFilePath().split("src")[1].length()).append(";")
+                        .append(me.getPosterPath().split("posters")[1], 1, me.getPosterPath().split("posters")[1].length()).append(";")
+                        .append(me.getYear()).append(";")
+                        .append(genresBuilder.toString()).append(";")
+                        .append(countriesBuilder.toString()).append(";")
+                        .append(me.getWebMapping());
+
+                writer.write(strbuilder.toString());
+                writer.append("\n");
+            }
+
+            writer.flush();
+        }
+        catch(IOException ex){
+
+            System.out.println(ex.getMessage());
+        }
     }
 
     public List<MovieEntity> getListOfEntities(){
@@ -232,6 +282,8 @@ public class DAO {
     private String takeInfo(Iterator<String> iterator){
         return iterator.next().split(" = ")[1];
     }
+
+
 
     class UpdateScheduler extends TimerTask{
 

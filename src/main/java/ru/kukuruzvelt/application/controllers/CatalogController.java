@@ -52,17 +52,42 @@ public class CatalogController {
 
     @GetMapping("/restcatalog")
     public String searchForMovie() {
+
         return "restcatalog";
     }
 
     @GetMapping("/catalogjson")
-    public ResponseEntity<List<MovieEntity>> searchForMovi1e() {
-        List<MovieEntity> list = DAO.getInstance(Application.sourceBase).prepareData().getListOfEntities();
-
-
+    public ResponseEntity<List<MovieEntity>> searchForMovi1e(@RequestParam(name = "year", required = false, defaultValue = "-1") String yearRequired,
+                                                             @RequestParam(name = "genre", required = false, defaultValue = "all") String genreRequired,
+                                                             @RequestParam(name = "country", required = false, defaultValue = "all") String countryRequired,
+                                                             @RequestParam(name = "search", required = false, defaultValue = "null") String searchRequest) {
+        List<MovieEntity> list = DAO.getInstance(Application.sourceBase)
+                .prepareData()
+                .filterByYear(Integer.parseInt(yearRequired))
+                .filterByGenre(genreRequired)
+                .filterByCountry(countryRequired)
+                .filterBySearchRequest(searchRequest)
+                .getListOfEntities();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @GetMapping("/genresjson")
+    public ResponseEntity<List<String>> returnGenres(){
+        List<String> list = DAO.getInstance(Application.sourceBase).prepareData().getAllGenres();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/countriesjson")
+    public ResponseEntity<List<String>> returnCountries(){
+        List<String> list = DAO.getInstance(Application.sourceBase).prepareData().getAllCountries();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/yearsjson")
+    public ResponseEntity<List<Integer>> returnYears(){
+        List<Integer> list = DAO.getInstance(Application.sourceBase).prepareData().getAllYears();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 
 
 }
