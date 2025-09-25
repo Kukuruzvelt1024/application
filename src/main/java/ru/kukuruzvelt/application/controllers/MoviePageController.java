@@ -11,7 +11,7 @@ import ru.kukuruzvelt.application.model.MovieEntity;
 
 @Slf4j
 @Controller
-public class VideoController {
+public class MoviePageController {
 
     @GetMapping("/movie/{name}")
     public String videoController1(Model model, @PathVariable String name){

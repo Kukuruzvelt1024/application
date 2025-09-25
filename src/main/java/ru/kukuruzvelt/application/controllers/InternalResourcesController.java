@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ import ru.kukuruzvelt.application.model.MovieEntity;
 import java.io.*;
 
 @Controller
-public class FileController {
+public class InternalResourcesController {
     private static String sourceFolder = "B:\\src";
 
     @Autowired
