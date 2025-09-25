@@ -19,7 +19,7 @@ import java.util.List;
 @Controller
 public class CatalogController {
 
-    @GetMapping("/catalog")
+    @GetMapping("/catalogthymeleaf")
     public String getCatalog(Model model,
                              HttpServletRequest request,
                              HttpServletResponse response,
@@ -28,7 +28,7 @@ public class CatalogController {
                              @RequestParam(name = "genre", required = false, defaultValue = "all") String genreRequired,
                              @RequestParam(name = "country", required = false, defaultValue = "all") String countryRequired,
                              @RequestParam(name = "search", required = false, defaultValue = "null") String searchRequest) {
-        System.out.println(
+       System.out.println(
                         "Доступ к каталогу от: " + request.getRemoteAddr() +
                         "; Тип сортировки: " + sortingType +
                         "; Запрошенный год: " + yearRequired +
@@ -47,27 +47,38 @@ public class CatalogController {
         model.addAttribute("listOfCountries", dao.getAllCountries());
         model.addAttribute("listOfMovies", dao.getListOfEntities());
         System.out.println(response.getContentType());
+        return "catalogthymeleaf";
+    }
+
+    @GetMapping("/catalog")
+    public String searchForMovie() {
+
         return "catalog";
     }
 
-    @GetMapping("/restcatalog")
-    public String searchForMovie() {
-
-        return "restcatalog";
-    }
-
     @GetMapping("/catalogjson")
-    public ResponseEntity<List<MovieEntity>> searchForMovi1e(@RequestParam(name = "year", required = false, defaultValue = "-1") String yearRequired,
-                                                             @RequestParam(name = "genre", required = false, defaultValue = "all") String genreRequired,
-                                                             @RequestParam(name = "country", required = false, defaultValue = "all") String countryRequired,
-                                                             @RequestParam(name = "search", required = false, defaultValue = "null") String searchRequest) {
+    public ResponseEntity<List<MovieEntity>> rawCatalogRequestHandler
+            (HttpServletRequest request,
+             HttpServletResponse response,
+             @RequestParam(name = "year", required = false, defaultValue = "null") String yearRequired,
+             @RequestParam(name = "genre", required = false, defaultValue = "null") String genreRequired,
+             @RequestParam(name = "country", required = false, defaultValue = "null") String countryRequired,
+             @RequestParam(name = "search", required = false, defaultValue = "null") String searchRequest) {
+        System.out.println(
+                "=============================================\n" +
+                        "Доступ к REST каталогу от: " + request.getRemoteAddr() +
+                        "; Запрошенный год: " + yearRequired +
+                        "; Запрошенный жанр:" + genreRequired +
+                        "; Запрошенная страна: " + countryRequired +
+                        "; Поиск по тексту: " + searchRequest);
         List<MovieEntity> list = DAO.getInstance(Application.sourceBase)
                 .prepareData()
-                .filterByYear(Integer.parseInt(yearRequired))
+                .filterByYear(yearRequired)
                 .filterByGenre(genreRequired)
                 .filterByCountry(countryRequired)
                 .filterBySearchRequest(searchRequest)
                 .getListOfEntities();
+
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

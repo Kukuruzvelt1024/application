@@ -77,7 +77,6 @@ public class HelloController {
     public ResponseEntity getAllEntities(){
         DAO dao = DAO.getInstance(Application.sourceBase);
         dao.prepareData();
-        dao.serializeToCsv();
         return new ResponseEntity(dao.getListOfEntities(), HttpStatus.OK);
 
 }

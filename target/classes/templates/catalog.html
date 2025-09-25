@@ -57,65 +57,40 @@
     </style>
 </head>
 <body>
-    <!--<div class="plenka"/>
 
-    -->
-    <h1>Каталог</h1>
-    <h2>Сортировка</h2>
-    <div class="sort"><a href="/catalog?sortby=year">по году</a></div>
-    <div class="sort"><a href="/catalog?sortby=ru" class="sort">по названию</a></div>
-    <div class="sort"><a href="/catalog?sortby=duration" class="sort">по продолжительности</a></div>
-    <h2>Фильтр</h2>
-    <details class="filter">
-        <summary>по жанру</summary>
-        <table class ="genres" align="center">
-            <tr>
-                <td><a href="?all"><p>Все</p></a></td>
-                <td th:each="genre: ${listOfGenres}">
-                    <a th:href="'?genre=' + ${genre}"><p th:text="${genre}"/></a>
-                </td>
-            </tr>
-        </table>
-    </details>
-    <details class="filter">
-        <summary>по году</summary>
-        <table class ="years" align="center">
-            <tr>
-                <td><a href="?all"><p>Все</p></a></td>
-                <td th:each="year: ${listOfYears}">
-                    <a th:href="'?year=' + ${year}"><p th:text="${year}"/></a>
-                </td>
-            </tr>
-        </table>
-    </details>
-    <details class="filter">
-        <summary>по стране</summary>
-        <table class ="countries" align="center">
-            <tr>
-                <td><a href="?all"><p>Все</p></a></td>
-                <td th:each="country: ${listOfCountries}">
-                    <a th:href="'?country=' + ${country}"><p th:text="${country}"/></a>
-                </td>
-            </tr>
-        </table>
-    </details>
-    <div class="search form">
-        <form>
-            <p><input type="text" name="search" placeholder="Название" size="18" /></p>
-            <button type="submit">Найти</button>
-        </form>
-    </div>
-    <table class="movie_blocks_table" align="center">
-        <tr th:each="video, status : ${listOfMovies}">
-            <td><a th:href="'/movie/' + ${video.WebMapping}"><img th:src="'/poster/' + ${video.WebMapping}" th:alt="${video.TitleRussian}" width="120" height="180" /></a>
-                <a th:href="'/movie/' + ${video.WebMapping}"><p th:text="${video.TitleRussian}"/></a>
-                <p th:text="${video.getCountriesAsString()} + ' / ' + ${video.getGenresAsString()} + ' / ' + ${video.Duration} + ' мин. / ' + ${video.Year}"/>
 
-            </td>
-        </tr>
-    </table>
-        <footer>
-            <p>©2025 Kukuruzvelt. Никаких прав, только обязанности.</p>
-        </footer>
-    </body>
- </html>
+<h1>Каталог</h1>
+<h2>Сортировка</h2>
+<div class="sort"><a href="/catalog?sortby=year">по году</a></div>
+<div class="sort"><a href="/catalog?sortby=ru" class="sort">по названию</a></div>
+<div class="sort"><a href="/catalog?sortby=duration" class="sort">по продолжительности</a></div>
+<h2>Фильтр</h2>
+<details id="Filter_by_genre" align="center">
+    <summary>по жанру</summary>
+    <script src="/javascript/GenresTableProducer.js" defer></script>
+</details>
+<details id="Filter_by_year" align="center">
+    <summary>по году</summary>
+    <script src="/javascript/YearsTableProducer.js" defer></script>
+</details>
+<details id="Filter_by_country" align="center">
+    <summary>по стране</summary>
+    <script src="/javascript/CountriesTableProducer.js" defer></script>
+</details>
+<div class="search form">
+    <form>
+        <p><input type="text" name="search" placeholder="Название" size="18" /></p>
+        <button type="submit">Найти</button>
+    </form>
+</div>
+
+<div id="Table_of_entities" align="center">
+    <script src="/javascript/CatalogTableProducer.js" defer>
+
+    </script>
+</div>
+<footer>
+    <p>©2025 Kukuruzvelt. Никаких прав, только обязанности.</p>
+</footer>
+</body>
+</html>

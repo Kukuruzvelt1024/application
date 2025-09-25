@@ -63,58 +63,9 @@ public class DAO {
         System.out.println("Количество годов: " + this.setOfUniqueYears.size());
     }
 
-    public void serializeToCsv(){
-        try(FileWriter writer = new FileWriter("A:\\append.txt", false))
-        {
-
-            Iterator<MovieEntity> iterator=this.localDatabaseCopy.iterator();
-            while(iterator.hasNext()) {
-                MovieEntity me = iterator.next();
-                StringBuilder strbuilder = new StringBuilder();
-                StringBuilder genresBuilder = new StringBuilder();
-                String genres[] = me.getGenres();
-                genresBuilder.append("{");
-                for(int i = 0; i< genres.length;i++){
-                    genresBuilder.append(genres[i]);
-                    if(i < genres.length-1) genresBuilder.append(", ");
-                }
-                genresBuilder.append("}");
-                StringBuilder countriesBuilder = new StringBuilder();
-                String countries[] = me.getCountries();
-                countriesBuilder.append("{");
-                for(int i = 0; i < countries.length;i++){
-
-                    countriesBuilder.append(countries[i]);
-                    if(i < countries.length-1) countriesBuilder.append(", ");
-                }
-                countriesBuilder.append("}");
-
-
-                        strbuilder.append(me.getDuration()).append(";")
-                        .append(me.getTitleRussian()).append(";")
-                        .append(me.getTitleOriginal()).append(";")
-                        .append(me.getFilePath().split("src")[1], 1, me.getFilePath().split("src")[1].length()).append(";")
-                        .append(me.getPosterPath().split("posters")[1], 1, me.getPosterPath().split("posters")[1].length()).append(";")
-                        .append(me.getYear()).append(";")
-                        .append(genresBuilder.toString()).append(";")
-                        .append(countriesBuilder.toString()).append(";")
-                        .append(me.getWebMapping());
-
-                writer.write(strbuilder.toString());
-                writer.append("\n");
-            }
-
-            writer.flush();
-        }
-        catch(IOException ex){
-
-            System.out.println(ex.getMessage());
-        }
-    }
-
     public List<MovieEntity> getListOfEntities(){
-        this.debugGenres();
-        this.debugCountries();
+       this.debugGenres();
+       this.debugCountries();
         return this.localDatabaseCopy;
     }
 
@@ -145,8 +96,21 @@ public class DAO {
         return this;
     }
 
+    public DAO filterByYear(String yearRequired){
+        if(!yearRequired.contentEquals("null") && (!yearRequired.contentEquals("all"))) {
+
+            Integer yearRequiredInteger = Integer.parseInt(yearRequired);
+            System.out.println(yearRequiredInteger);
+            this.localDatabaseCopy = this.localDatabaseCopy.
+                    stream().
+                    filter(e -> e.getYear().equals(yearRequiredInteger)).
+                    collect(Collectors.toList());
+        }
+        return this;
+    }
+
     public DAO filterByGenre(String genreRequired){
-        if (!genreRequired.contentEquals("all")) {
+        if ((!genreRequired.contentEquals("all")) && (!genreRequired.contentEquals("null"))) {
             this.localDatabaseCopy = this.localDatabaseCopy.
                     stream().
                     filter(e -> e.containsGenre(genreRequired)).collect(Collectors.toList());
@@ -155,7 +119,7 @@ public class DAO {
     }
 
     public DAO filterByCountry(String countryRequired){
-        if (!countryRequired.contentEquals("all")) {
+        if ((!countryRequired.contentEquals("all")) && (!countryRequired.contentEquals("null"))) {
             this.localDatabaseCopy = this.localDatabaseCopy.
                     stream().
                     filter(e -> e.containsCountry(countryRequired)).collect(Collectors.toList());

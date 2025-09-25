@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,17 @@ public class FileController {
                                            HttpServletRequest request,
                                            HttpServletResponse response) throws IOException {
         final InputStream videoFileStream = new FileInputStream("B:\\assets\\sda.jpg");
+        long size = videoFileStream.available();
+        //System.out.println("Отправка ассета");
+        return (os) -> {
+            readAndWrite(videoFileStream, os);
+        };
+    }
+
+    @GetMapping("/javascript/{jsFileName}")
+    public StreamingResponseBody downloadFile(@PathVariable String jsFileName) throws IOException {
+        String path = "C:\\Users\\Val\\IdeaProjects\\application\\src\\main\\resources\\templates\\" + jsFileName;
+        final InputStream videoFileStream = new FileInputStream(path);
         long size = videoFileStream.available();
         //System.out.println("Отправка ассета");
         return (os) -> {
