@@ -63,7 +63,8 @@ public class CatalogController {
              @RequestParam(name = "year", required = false, defaultValue = "null") String yearRequired,
              @RequestParam(name = "genre", required = false, defaultValue = "null") String genreRequired,
              @RequestParam(name = "country", required = false, defaultValue = "null") String countryRequired,
-             @RequestParam(name = "search", required = false, defaultValue = "null") String searchRequest) {
+             @RequestParam(name = "search", required = false, defaultValue = "null") String searchRequest,
+             @RequestParam(name = "sortby", required = false, defaultValue = "null") String sortingType) {
         System.out.println(
                 "=============================================\n" +
                         "Доступ к REST каталогу от: " + request.getRemoteAddr() +
@@ -77,6 +78,7 @@ public class CatalogController {
                 .filterByGenre(genreRequired)
                 .filterByCountry(countryRequired)
                 .filterBySearchRequest(searchRequest)
+                .sortBy(sortingType)
                 .getListOfEntities();
 
         return new ResponseEntity<>(list, HttpStatus.OK);

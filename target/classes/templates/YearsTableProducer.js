@@ -1,5 +1,6 @@
 let yearstable = document.createElement('table');
         yearstable.setAttribute("align", "center");
+        yearstable.setAttribute("class", "table_of_years");
         fetch("/yearsjson").then(response => {
             if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}
             return response.json(); // Преобразование ответа в JSON

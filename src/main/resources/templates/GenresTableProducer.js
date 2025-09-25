@@ -1,5 +1,6 @@
  let genrestable = document.createElement('table');
         genrestable.setAttribute("align", "center");
+        genrestable.setAttribute("class", "table_of_genres");
         fetch("/genresjson").then(response => {
             if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}
             return response.json(); // Преобразование ответа в JSON

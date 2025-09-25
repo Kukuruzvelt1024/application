@@ -1,5 +1,6 @@
 let countriestable = document.createElement('table');
         countriestable.setAttribute("align", "center");
+        countriestable.setAttribute("class", "table_of_countries");
         fetch("/countriesjson").then(response => {
             if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}
             return response.json(); // Преобразование ответа в JSON
