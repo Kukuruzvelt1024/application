@@ -1,11 +1,11 @@
 let params = new URLSearchParams(document.location.search);
-       let countryRequired = params.get("country");
-       let yearRequired = params.get("year");
-       let genreRequired = params.get("genre");
-       let searchRequest = params.get("search");
-       let table = document.createElement('table');
-       table.setAttribute("align", "center");
-       fetch("/catalogjson?genre="+genreRequired+"&year="+yearRequired+"&country="+countryRequired+"&search="+searchRequest)
+let countryRequired = params.get("country");
+let yearRequired = params.get("year");
+let genreRequired = params.get("genre");
+let searchRequest = params.get("search");
+let table = document.createElement('table');
+table.setAttribute("align", "center");
+fetch("/catalogjson?genre="+genreRequired+"&year="+yearRequired+"&country="+countryRequired+"&search="+searchRequest)
        .then(response => {
            if (!response.ok) {
                throw new Error(`HTTP error! status: ${response.status}`);

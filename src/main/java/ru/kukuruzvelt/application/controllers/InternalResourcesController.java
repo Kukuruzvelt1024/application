@@ -41,7 +41,7 @@ public class InternalResourcesController {
                                            HttpServletResponse response) throws IOException {
         DAO dao = DAO.getInstance(Application.sourceBase);
         MovieEntity me = dao.findByWebMapping(title);
-        //System.out.println("Отправка постера: " + me.getPosterPath());
+        System.out.println("Отправка постера: " + me.getPosterPath());
         final InputStream videoFileStream = new FileInputStream(me.getPosterPath());
         long size = videoFileStream.available();
         return (os) -> {
@@ -64,13 +64,26 @@ public class InternalResourcesController {
     @GetMapping("/javascript/{jsFileName}")
     public StreamingResponseBody downloadFile(@PathVariable String jsFileName) throws IOException {
         String path = "C:\\Users\\Val\\IdeaProjects\\application\\src\\main\\resources\\templates\\" + jsFileName;
-        final InputStream videoFileStream = new FileInputStream(path);
-        long size = videoFileStream.available();
+        final InputStream fileStream = new FileInputStream(path);
+        long size = fileStream.available();
         //System.out.println("Отправка ассета");
         return (os) -> {
-            readAndWrite(videoFileStream, os);
+            readAndWrite(fileStream, os);
         };
     }
+
+    @GetMapping("/css/{cssFileName}")
+    public StreamingResponseBody downloadCSS(@PathVariable String cssFileName) throws IOException {
+        String path = "C:\\Users\\Val\\IdeaProjects\\application\\src\\main\\resources\\templates\\" + cssFileName;
+        final InputStream fileStream = new FileInputStream(path);
+        long size = fileStream.available();
+        //System.out.println("Отправка ассета");
+        return (os) -> {
+            readAndWrite(fileStream, os);
+        };
+    }
+
+
 
     private void readAndWrite(final InputStream is, OutputStream os)
             throws IOException {
