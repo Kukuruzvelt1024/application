@@ -1,0 +1,49 @@
+body {
+            background-color: #424141;
+            color: white; * Цвет текста */
+            text-align: center;
+        }
+        a:link { color: white } /* Цвет непросмотренной ссылки */
+        a:visited { color: white; } /* Цвет посещенной ссылки */
+        a:hover { color: red; } /* Цвет при наведении */
+        a:active { color: green; } /* Цвет активной ссылки */
+        h1{
+            font-size: 72px;
+            color = white;
+            font-family: "Impact";
+            text-align: center;
+        }
+        h2{
+            text-align: center;
+        }
+        .sort{text-align: center;}
+
+        .plenka{
+            background-image: url(/assets/r);
+            background-size: 100px 50px;
+            background-repeat: no-repeat;
+            background-repeat: repeat-y;
+        }
+        table, th, td{
+            border: 3px solid white;
+            text-align: center;
+        }
+        td:hover {
+                    background: #008080; /* Цвет фона при наведении */
+                    color: #fff; /* Цвет текста при наведении */
+        }
+        .filter{
+            text-align: center;
+        }
+        .years, .genres, .countries{
+            border: 1px solid white;
+            text-align: center;
+        }
+        .search form{
+            display: flex;
+             align-items: center;
+             justify-content: center;
+        }
+        footer{
+            text-align: center;
+        }
