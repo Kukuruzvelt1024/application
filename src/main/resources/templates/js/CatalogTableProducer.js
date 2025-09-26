@@ -26,7 +26,7 @@ fetch("/raw/catalog?genre="+genreRequired+"&year="+yearRequired+"&country="+coun
                i++
                let cell = row.insertCell();
                cell.innerHTML =
-               "<a href=/movie/" + entity.WebMapping +"><img src=poster/" + entity.WebMapping + " alt="+entity.TitleRussian + " width=120 height=180 /></a>" +
+               "<a href=/movie/" + entity.WebMapping +"><img src=internal/posters/" + entity.WebMapping + " alt="+entity.TitleRussian + " width=120 height=180 /></a>" +
                "<p><a href=/movie/"+entity.WebMapping+ ">" + entity.TitleRussian + "</a></p>" +
                "<p>" + entity.Countries+ " / " + entity.Genres + " / " + entity.Duration + " мин. / " + entity.Year + "</p>"
            }

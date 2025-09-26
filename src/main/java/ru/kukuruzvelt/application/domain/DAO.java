@@ -249,14 +249,4 @@ public class DAO {
     }
 
 
-
-    class UpdateScheduler extends TimerTask{
-
-
-        @Override
-        public void run() {
-
-        }
-    }
-
 }

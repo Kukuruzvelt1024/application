@@ -4,33 +4,7 @@
 
         <meta charset="UTF-8">
         <title th:text="${pageTitle}"></title>
-        <style>
-            body {
-                background-color: #424141;
-                color: white; * Цвет текста */
-            }
-             a:link { color: white } /* Цвет непросмотренной ссылки */
-        a:visited { color: white; } /* Цвет посещенной ссылки */
-        a:hover { color: red; } /* Цвет при наведении */
-        a:active { color: green; } /* Цвет активной ссылки */
-            h1 {
-                font-size: 72px;
-                color = white;
-                font-family: "Impact";
-                text-align: center;
-            }
-            .template player{
-                display: flex;
-             align-items: center;
-             justify-content: center;
-            }
-            h3 {
-                font-size: 26px;
-                color = white;
-                font-family: "Impact";
-                text-align: center;
-            }
-        </style>
+        <link rel="stylesheet" href="/internal/css/GlobalStyleSheet.css">
         </head>
         <body>
             <h1><p th:text="${pageTitle}"></p></h1>

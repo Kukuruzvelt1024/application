@@ -22,7 +22,7 @@ public class MoviePageController {
             // var loggingEventBuilder = log.atDebug();
             System.out.println("Доступ к странице просмотра: " + name);
             model.addAttribute("pageTitle", me.getTitleRussian());
-            model.addAttribute("page", "file/" + name);
+            model.addAttribute("page", "internal/file/" + name);
             return "video";
         }
         catch (NullPointerException npe){
