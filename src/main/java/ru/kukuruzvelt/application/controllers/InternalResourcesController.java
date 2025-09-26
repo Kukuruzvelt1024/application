@@ -19,6 +19,11 @@ import java.io.*;
 @Controller
 public class InternalResourcesController {
     private static String sourceFolder = "B:\\src";
+    private static String cssFolder = "B:\\IdeaProjects\\application\\src\\main\\resources\\templates\\css\\";
+    private static String jsFolder = "B:\\IdeaProjects\\application\\src\\main\\resources\\templates\\js\\";
+    private static String posterFolder;
+    private static String videoSourceFolder;
+    private static String assetsFolder;
 
     @Autowired
     private MyResourceHttpRequestHandler handler;
@@ -27,7 +32,7 @@ public class InternalResourcesController {
     public void getVideoFile(HttpServletRequest request,
                              HttpServletResponse response,
                              @PathVariable String name)
-                             throws ServletException, IOException {
+            throws ServletException, IOException {
         System.out.println("Отправка видеофрагмента: " + name + " на адрес: " + request.getRemoteAddr());
         File source = new File(sourceFolder, name);
         request.setAttribute(MyResourceHttpRequestHandler.ATTR_FILE, source);
@@ -49,38 +54,23 @@ public class InternalResourcesController {
         };
     }
 
-    @GetMapping("/assets/r")
-    public StreamingResponseBody getAsset(
-                                           HttpServletRequest request,
-                                           HttpServletResponse response) throws IOException {
-        final InputStream videoFileStream = new FileInputStream("B:\\assets\\sda.jpg");
-        long size = videoFileStream.available();
-        //System.out.println("Отправка ассета");
-        return (os) -> {
-            readAndWrite(videoFileStream, os);
+    @GetMapping("internal/{sourceType}/{fileName}")
+    public StreamingResponseBody getFileFromLocalFileSystem(
+            @PathVariable String sourceType,
+            @PathVariable String fileName) throws IOException {
+
+
+        final InputStream fileStream = new FileInputStream(findURLResourceInLocalStorage(sourceType, fileName));
+        long size = fileStream.available();
+        return (os) -> {readAndWrite(fileStream, os);
         };
     }
 
-    @GetMapping("/javascript/{jsFileName}")
-    public StreamingResponseBody downloadFile(@PathVariable String jsFileName) throws IOException {
-        String path = "C:\\Users\\Val\\IdeaProjects\\application\\src\\main\\resources\\templates\\" + jsFileName;
-        final InputStream fileStream = new FileInputStream(path);
-        long size = fileStream.available();
-        //System.out.println("Отправка ассета");
-        return (os) -> {
-            readAndWrite(fileStream, os);
-        };
-    }
-
-    @GetMapping("/css/{cssFileName}")
-    public StreamingResponseBody downloadCSS(@PathVariable String cssFileName) throws IOException {
-        String path = "C:\\Users\\Val\\IdeaProjects\\application\\src\\main\\resources\\templates\\" + cssFileName;
-        final InputStream fileStream = new FileInputStream(path);
-        long size = fileStream.available();
-        //System.out.println("Отправка ассета");
-        return (os) -> {
-            readAndWrite(fileStream, os);
-        };
+    private String findURLResourceInLocalStorage(String sourceType, String fileName){
+        if (sourceType.contentEquals("css")) return new String(cssFolder + fileName);
+        if (sourceType.contentEquals("javascript")) return new String(jsFolder + fileName);
+        if (sourceType.contentEquals("assets")) return new String(assetsFolder + fileName);
+        return null;
     }
 
 

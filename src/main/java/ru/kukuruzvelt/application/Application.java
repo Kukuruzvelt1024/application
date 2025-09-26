@@ -9,6 +9,7 @@ public class Application {
 	public static String sourceBase = "B:\\src\\database_substitute.txt";
 
 	public static void main(String[] args) {
+		System.out.println("Application Started");
 		SpringApplication.run(Application.class, args);
 	}
 

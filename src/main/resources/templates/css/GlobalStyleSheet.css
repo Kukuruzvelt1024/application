@@ -33,16 +33,25 @@ th, td{
 	border-collapse: separate; 
 	border-spacing: 10px;
 }
+.table_of_years td{
+	width: 40px;
+}
 .table_of_countries{
 	border-collapse: separate; 
 	border-spacing: 10px;
 }
+.table_of_countries td{
+	width: 80px;
+}
 .table_of_genres{
 	border-collapse: separate; 
-	border-spacing: 10px;
+	border-spacing: 10px;	
+}
+.table_of_genres td{
+	width: 80px;
 }
 td:hover{
-	background: #008080; /* Цвет фона при наведении */
+	background: #2E8B57; /* Цвет фона при наведении */
  	color: #fff; /* Цвет текста при наведении */
 }
 .filter{

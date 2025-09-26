@@ -14,8 +14,6 @@ import lombok.*;
 
 public class MovieEntity {
 
-
-    private int id;
     private String WebMapping;
     private String FilePath;
     private String PosterPath;

@@ -211,9 +211,10 @@ public class DAO {
     }
 
     public DAO sortBy(String sortType) {
+
         if (sortType.contentEquals("eng"))
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getTitleOriginal));
-        if (sortType.contentEquals("ru"))
+        if ((sortType.contentEquals("ru")) && (sortType.contentEquals("null")));
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getTitleRussian));
         if (sortType.contentEquals("year"))
             this.localDatabaseCopy.sort(Comparator.comparing(MovieEntity::getYear));

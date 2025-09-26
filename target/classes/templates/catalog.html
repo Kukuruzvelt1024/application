@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Каталог</title>
-    <link rel="stylesheet" href="/css/GlobalStyleSheet.css">
+    <link rel="stylesheet" href="/internal/css/GlobalStyleSheet.css">
 </head>
 <body>
 
@@ -14,18 +14,18 @@
 <div class="sort"><a href="/catalog?sortby=ru" class="sort">по названию</a></div>
 <div class="sort"><a href="/catalog?sortby=duration" class="sort">по продолжительности</a></div>
 <h2>Фильтр</h2>
-<details id="Filter_by_genre" align="center">
+<div id="Filter_by_genre" align="center">
     <summary>по жанру</summary>
-    <script src="/javascript/GenresTableProducer.js" defer></script>
-</details>
-<details id="Filter_by_year" align="center">
+    <script src="/internal/javascript/GenresTableProducer.js" defer></script>
+</div>
+<div id="Filter_by_year" align="center">
     <summary>по году</summary>
-    <script src="/javascript/YearsTableProducer.js" defer></script>
-</details>
-<details id="Filter_by_country" align="center">
+    <script src="/internal/javascript/YearsTableProducer.js" defer></script>
+</div>
+<div id="Filter_by_country" align="center">
     <summary>по стране</summary>
-    <script src="/javascript/CountriesTableProducer.js" defer></script>
-</details>
+    <script src="/internal/javascript/CountriesTableProducer.js" defer></script>
+</div>
 <div class="search form">
     <form>
         <p><input type="text" name="search" placeholder="Название" size="18" /></p>
@@ -34,7 +34,7 @@
 </div>
 
 <div id="Table_of_entities" align="center">
-    <script src="/javascript/CatalogTableProducer.js" defer>
+    <script src="/internal/javascript/CatalogTableProducer.js" defer>
 
     </script>
 </div>

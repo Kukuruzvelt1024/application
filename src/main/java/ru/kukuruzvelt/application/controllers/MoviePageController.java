@@ -1,6 +1,8 @@
 package ru.kukuruzvelt.application.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,7 @@ public class MoviePageController {
     public String videoController1(Model model, @PathVariable String name){
         try {
             MovieEntity me = DAO.getInstance(Application.sourceBase).findByWebMapping(name);
-            var loggingEventBuilder = log.atDebug();
+            // var loggingEventBuilder = log.atDebug();
             System.out.println("Доступ к странице просмотра: " + name);
             model.addAttribute("pageTitle", me.getTitleRussian());
             model.addAttribute("page", "file/" + name);
@@ -26,6 +28,12 @@ public class MoviePageController {
         catch (NullPointerException npe){
             return "404";
         }
+    }
+
+    @GetMapping("raw/movie/{name}")
+    public ResponseEntity movieData(@PathVariable String name){
+        MovieEntity me = DAO.getInstance(Application.sourceBase).findByWebMapping(name);
+        return new ResponseEntity<MovieEntity>(me, HttpStatus.OK);
     }
 
 

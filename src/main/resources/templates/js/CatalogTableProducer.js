@@ -3,9 +3,10 @@ let countryRequired = params.get("country");
 let yearRequired = params.get("year");
 let genreRequired = params.get("genre");
 let searchRequest = params.get("search");
+let sortType = params.get("sortby");
 let table = document.createElement('table');
 table.setAttribute("align", "center");
-fetch("/catalogjson?genre="+genreRequired+"&year="+yearRequired+"&country="+countryRequired+"&search="+searchRequest)
+fetch("/raw/catalog?genre="+genreRequired+"&year="+yearRequired+"&country="+countryRequired+"&search="+searchRequest+"&sortby="+sortType)
        .then(response => {
            if (!response.ok) {
                throw new Error(`HTTP error! status: ${response.status}`);

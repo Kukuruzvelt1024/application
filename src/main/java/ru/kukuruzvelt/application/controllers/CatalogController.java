@@ -56,7 +56,7 @@ public class CatalogController {
         return "catalog";
     }
 
-    @GetMapping("/catalogjson")
+    @GetMapping("/raw/catalog")
     public ResponseEntity<List<MovieEntity>> rawCatalogRequestHandler
             (HttpServletRequest request,
              HttpServletResponse response,
@@ -71,7 +71,8 @@ public class CatalogController {
                         "; Запрошенный год: " + yearRequired +
                         "; Запрошенный жанр:" + genreRequired +
                         "; Запрошенная страна: " + countryRequired +
-                        "; Поиск по тексту: " + searchRequest);
+                        "; Поиск по тексту: " + searchRequest+
+                        "; Тип сортировки: " + sortingType);
         List<MovieEntity> list = DAO.getInstance(Application.sourceBase)
                 .prepareData()
                 .filterByYear(yearRequired)
